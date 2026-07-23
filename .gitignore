@@ -1,0 +1,14 @@
+# Xcode / build
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+
+# Généré par XcodeGen à partir de project.yml
+RenduMonnaie.xcodeproj/
+
+# macOS
+.DS_Store
+
+# Sauvegarde de l'ancien fichier monolithique
+_original_backup/

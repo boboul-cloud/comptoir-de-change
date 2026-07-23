@@ -1,0 +1,56 @@
+name: RenduMonnaie
+options:
+  bundleIdPrefix: com.oulhen
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+  developmentLanguage: fr
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    GENERATE_INFOPLIST_FILE: YES
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    CODE_SIGN_STYLE: Automatic
+
+targets:
+  RenduMonnaie:
+    type: application
+    platform: iOS
+    sources:
+      - path: RenduMonnaie
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.oulhen.rendumonnaie
+        TARGETED_DEVICE_FAMILY: "1,2"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        INFOPLIST_KEY_CFBundleDisplayName: "Comptoir de change"
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+
+  RenduMonnaieTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: RenduMonnaieTests
+    dependencies:
+      - target: RenduMonnaie
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.oulhen.rendumonnaie.tests
+        GENERATE_INFOPLIST_FILE: YES
+
+schemes:
+  RenduMonnaie:
+    build:
+      targets:
+        RenduMonnaie: all
+        RenduMonnaieTests: [test]
+    test:
+      targets:
+        - RenduMonnaieTests

@@ -1,0 +1,402 @@
+{
+  "sourceLanguage": "fr",
+  "strings": {
+    "COMPTOIR DE CHANGE": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "EXCHANGE COUNTER"
+          }
+        }
+      }
+    },
+    "Rendu de monnaie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change Due"
+          }
+        }
+      }
+    },
+    "entre deux devises": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "between two currencies"
+          }
+        }
+      }
+    },
+    "MONNAIE À RENDRE": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CHANGE TO GIVE"
+          }
+        }
+      }
+    },
+    "MONTANT INSUFFISANT": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "INSUFFICIENT AMOUNT"
+          }
+        }
+      }
+    },
+    "soit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "i.e."
+          }
+        }
+      }
+    },
+    "OK": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
+          }
+        }
+      }
+    },
+    "Devise payée": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Currency paid"
+          }
+        }
+      }
+    },
+    "Devise du prix": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Price currency"
+          }
+        }
+      }
+    },
+    "Commission": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commission"
+          }
+        }
+      }
+    },
+    "Rendre la monnaie en": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Give change in"
+          }
+        }
+      }
+    },
+    "Prix à payer (en %@)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Price to pay (in %@)"
+          }
+        }
+      }
+    },
+    "Montant reçu (en %@)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amount received (in %@)"
+          }
+        }
+      }
+    },
+    "Taux personnalisé — référence : %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Custom rate — reference: %@"
+          }
+        }
+      }
+    },
+    "Taux de conversion officiel figé (irrévocable)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Official fixed conversion rate (irrevocable)"
+          }
+        }
+      }
+    },
+    "Cours en direct — mis à jour le %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Live rate — updated %@"
+          }
+        }
+      }
+    },
+    "Taux enregistrés — tire vers le bas pour actualiser": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saved rates — pull to refresh"
+          }
+        }
+      }
+    },
+    "Le montant reçu représente %@ %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The amount received equals %@ %@."
+          }
+        }
+      }
+    },
+    "Le montant reçu représente %@ %@. (commission %@% incluse)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The amount received equals %@ %@. (%@% commission included)"
+          }
+        }
+      }
+    },
+    "⚠️ Ce taux s'écarte de %@% du cours de référence — vérifie-le avant de rendre la monnaie.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⚠️ This rate differs by %@% from the reference — double-check it before giving change."
+          }
+        }
+      }
+    },
+    "Inverser les deux devises": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Swap the two currencies"
+          }
+        }
+      }
+    },
+    "Taux de change": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exchange rate"
+          }
+        }
+      }
+    },
+    "Commission en pourcentage": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commission percentage"
+          }
+        }
+      }
+    },
+    "Rétablir le taux de référence": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset to reference rate"
+          }
+        }
+      }
+    },
+    "Modifier le taux": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit the rate"
+          }
+        }
+      }
+    },
+    "%lld fois %@ %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld times %@ %@"
+          }
+        }
+      }
+    },
+    "Montant insuffisant. Il manque %@ %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insufficient amount. Missing %@ %@."
+          }
+        }
+      }
+    },
+    "Monnaie à rendre : %@ %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change to give: %@ %@."
+          }
+        }
+      }
+    },
+    "Il manque %@ %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Missing %@ %@"
+          }
+        }
+      }
+    },
+    "Aucune connexion Internet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Internet connection"
+          }
+        }
+      }
+    },
+    "Délai d'attente dépassé": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Request timed out"
+          }
+        }
+      }
+    },
+    "Serveur des cours injoignable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rate server unreachable"
+          }
+        }
+      }
+    },
+    "Réponse du serveur invalide": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invalid server response"
+          }
+        }
+      }
+    },
+    "Cours indisponible": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rates unavailable"
+          }
+        }
+      }
+    },
+    "Données de cours illisibles": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unreadable rate data"
+          }
+        }
+      }
+    },
+    "%@ — taux enregistrés conservés.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ — saved rates kept."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

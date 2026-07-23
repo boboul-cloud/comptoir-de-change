@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2A2E23"/>
+      <stop offset="1" stop-color="#12150D"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#EEC873"/>
+      <stop offset="1" stop-color="#C68C27"/>
+    </linearGradient>
+    <linearGradient id="green" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6FAE7E"/>
+      <stop offset="1" stop-color="#356E43"/>
+    </linearGradient>
+    <radialGradient id="sheen" cx="0.35" cy="0.28" r="0.75">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.35"/>
+      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Fond plein (aucune transparence) -->
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+
+  <!-- Halo doux derrière les pièces -->
+  <circle cx="512" cy="512" r="360" fill="#F2EDE3" opacity="0.05"/>
+
+  <!-- ===== Pièce EURO (or), en arrière ===== -->
+  <g>
+    <circle cx="415" cy="440" r="250" fill="#8F6A1E"/>
+    <circle cx="415" cy="440" r="234" fill="url(#gold)"/>
+    <circle cx="415" cy="440" r="234" fill="url(#sheen)"/>
+    <circle cx="415" cy="440" r="196" fill="none" stroke="#8F6A1E" stroke-opacity="0.55" stroke-width="8"/>
+    <!-- Symbole € vectorisé -->
+    <g transform="translate(415,440)" fill="none" stroke="#3E2C0B"
+       stroke-width="32" stroke-linecap="round">
+      <path d="M 78 -78 A 112 112 0 1 0 78 78"/>
+      <path d="M -142 -26 H 44"/>
+      <path d="M -142 26 H 44"/>
+    </g>
+  </g>
+
+  <!-- ===== Pièce DOLLAR (vert), au-dessus ===== -->
+  <g>
+    <!-- liseré sombre pour détacher la pièce du fond -->
+    <circle cx="632" cy="612" r="264" fill="#12150D"/>
+    <circle cx="632" cy="612" r="250" fill="#285437"/>
+    <circle cx="632" cy="612" r="234" fill="url(#green)"/>
+    <circle cx="632" cy="612" r="234" fill="url(#sheen)"/>
+    <circle cx="632" cy="612" r="196" fill="none" stroke="#1F4A2E" stroke-opacity="0.55" stroke-width="8"/>
+    <!-- Symbole $ vectorisé -->
+    <g transform="translate(632,612)" fill="none" stroke="#F4EFE3"
+       stroke-width="32" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M 70 -74 C 40 -104 -70 -104 -70 -44 C -70 6 70 -6 70 54 C 70 114 -40 114 -70 84"/>
+      <path d="M 0 -110 V 110"/>
+    </g>
+  </g>
+
+  <!-- ===== Badge « échange » (flèches) en haut à droite ===== -->
+  <g transform="translate(792,300)">
+    <circle cx="0" cy="0" r="118" fill="#12150D"/>
+    <circle cx="0" cy="0" r="104" fill="#F2EDE3"/>
+    <g fill="none" stroke="#356E43" stroke-width="26" stroke-linecap="round">
+      <path d="M -50 -26 H 50"/>
+      <path d="M -50 26 H 50"/>
+    </g>
+    <path d="M 40 -50 L 76 -26 L 40 -2 Z" fill="#356E43"/>
+    <path d="M -40 2 L -76 26 L -40 50 Z" fill="#356E43"/>
+  </g>
+</svg>
