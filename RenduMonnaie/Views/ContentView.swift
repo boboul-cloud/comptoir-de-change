@@ -15,6 +15,7 @@ struct ContentView: View {
     @State private var locationService = LocationService()
     @State private var orientation: UIDeviceOrientation = UIDevice.current.orientation
     @State private var showHistory = false
+    @State private var showAbout = false
     @State private var achatNote = ""
     @State private var achatEnregistre = false
 
@@ -163,6 +164,9 @@ struct ContentView: View {
         .sheet(isPresented: $showHistory) {
             PurchaseHistoryView(journal: journal, rateStore: store, locationService: locationService)
         }
+        .sheet(isPresented: $showAbout) {
+            AboutView()
+        }
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
@@ -186,6 +190,7 @@ struct ContentView: View {
             // peuvent jamais le chevaucher, quels que soient la largeur de l'écran ou la
             // taille de texte choisie par l'utilisateur.
             HStack(spacing: 10) {
+                aboutButton
                 Spacer()
                 resetButton
                 historyButton
@@ -207,6 +212,18 @@ struct ContentView: View {
             .accessibilityElement(children: .combine)
             .frame(maxWidth: .infinity)
         }
+    }
+
+    private var aboutButton: some View {
+        Button { showAbout = true } label: {
+            Image(systemName: "info.circle")
+                .scaledFont(15, weight: .medium)
+                .foregroundStyle(Color.accentGreen)
+                .frame(width: 38, height: 38)
+                .background(Color.cardBG, in: .circle)
+                .overlay(Circle().stroke(Color.cardLine, lineWidth: 1))
+        }
+        .accessibilityLabel("À propos")
     }
 
     private var resetButton: some View {

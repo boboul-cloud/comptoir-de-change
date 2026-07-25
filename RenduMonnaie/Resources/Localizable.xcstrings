@@ -1,7 +1,7 @@
 {
   "sourceLanguage": "fr",
   "strings": {
-    " : %@": {},
+    " : ": {},
     "%": {},
     "%@": {},
     "%@ %@": {
@@ -15,21 +15,21 @@
       }
     },
     "%@ %@ → %@ %@ rendus": {
+      "extractionState": "manual",
       "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": "%1$@ %2$@ → %3$@ %4$@ rendus"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "%@ %@ → %@ %@ given back"
           }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ %2$@ → %3$@ %4$@ rendus"
+          }
         }
-      },
-      "extractionState": "manual"
+      }
     },
     "%@ fois %@ %@": {
       "localizations": {
@@ -165,6 +165,7 @@
       }
     },
     "Aucun achat enregistré": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -172,8 +173,7 @@
             "value": "No purchases recorded"
           }
         }
-      },
-      "extractionState": "manual"
+      }
     },
     "Aucune connexion Internet": {
       "extractionState": "manual",
@@ -209,6 +209,7 @@
       }
     },
     "BILAN DE VOYAGE": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -216,10 +217,10 @@
             "value": "TRIP SUMMARY"
           }
         }
-      },
-      "extractionState": "manual"
+      }
     },
     "BILAN DU VOYAGE": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -227,8 +228,7 @@
             "value": "TRIP SUMMARY"
           }
         }
-      },
-      "extractionState": "manual"
+      }
     },
     "Belgique (franc)": {
       "extractionState": "manual",
@@ -286,6 +286,7 @@
       }
     },
     "Cette action supprimera définitivement les achats enregistrés de ce voyage. Elle est irréversible.": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -293,8 +294,7 @@
             "value": "This will permanently delete the purchases recorded for this trip. This action cannot be undone."
           }
         }
-      },
-      "extractionState": "manual"
+      }
     },
     "Chine": {
       "extractionState": "manual",
@@ -303,6 +303,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "China"
+          }
+        }
+      }
+    },
+    "Code source (GitHub)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Source code (GitHub)"
           }
         }
       }
@@ -330,6 +341,17 @@
       }
     },
     "Comptoir de change": {},
+    "Conditions d'utilisation": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terms of Use"
+          }
+        }
+      }
+    },
     "Corée du Sud": {
       "extractionState": "manual",
       "localizations": {
@@ -364,6 +386,7 @@
       }
     },
     "Cumule tes achats ici pour retrouver un bilan complet en fin de voyage.": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -371,8 +394,7 @@
             "value": "Track your purchases here to get a complete summary at the end of your trip."
           }
         }
-      },
-      "extractionState": "manual"
+      }
     },
     "Danemark": {
       "extractionState": "manual",
@@ -419,6 +441,7 @@
       }
     },
     "DÉTAIL DES ACHATS": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -426,8 +449,7 @@
             "value": "PURCHASE DETAILS"
           }
         }
-      },
-      "extractionState": "manual"
+      }
     },
     "Délai d'attente dépassé": {
       "extractionState": "manual",
@@ -452,6 +474,7 @@
       }
     },
     "Enregistre un achat depuis l'écran principal pour construire ton bilan de voyage.": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -459,8 +482,7 @@
             "value": "Save a purchase from the main screen to build your trip summary."
           }
         }
-      },
-      "extractionState": "manual"
+      }
     },
     "Enregistrer cet achat": {
       "extractionState": "manual",
@@ -551,6 +573,7 @@
       }
     },
     "Généré le %@": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -558,8 +581,7 @@
             "value": "Generated on %@"
           }
         }
-      },
-      "extractionState": "manual"
+      }
     },
     "Historique des achats": {
       "extractionState": "manual",
@@ -568,6 +590,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Purchase history"
+          }
+        }
+      }
+    },
+    "Historique des achats, %@ enregistrés": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Purchase history, %@ recorded"
           }
         }
       }
@@ -705,6 +737,7 @@
       }
     },
     "La position n'a pas pu être relevée lors de l'enregistrement de cet achat.": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -712,8 +745,7 @@
             "value": "The location couldn't be recorded when this purchase was saved."
           }
         }
-      },
-      "extractionState": "manual"
+      }
     },
     "Le montant reçu représente %@ %@.": {
       "extractionState": "manual",
@@ -760,6 +792,7 @@
       }
     },
     "Lieu non disponible": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -767,8 +800,7 @@
             "value": "Location unavailable"
           }
         }
-      },
-      "extractionState": "manual"
+      }
     },
     "Luxembourg (franc)": {
       "extractionState": "manual",
@@ -946,6 +978,17 @@
         }
       }
     },
+    "Politique de confidentialité": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy Policy"
+          }
+        }
+      }
+    },
     "Pologne": {
       "extractionState": "manual",
       "localizations": {
@@ -1024,21 +1067,21 @@
       }
     },
     "Reçu %@ %@ · rendu %@ %@": {
+      "extractionState": "manual",
       "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": "Reçu %1$@ %2$@ · rendu %3$@ %4$@"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Received %@ %@ · change %@ %@"
           }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Reçu %1$@ %2$@ · rendu %3$@ %4$@"
+          }
         }
-      },
-      "extractionState": "manual"
+      }
     },
     "Roumanie": {
       "extractionState": "manual",
@@ -1128,6 +1171,17 @@
         }
       }
     },
+    "Site web": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Website"
+          }
+        }
+      }
+    },
     "Suisse": {
       "extractionState": "manual",
       "localizations": {
@@ -1173,6 +1227,7 @@
       }
     },
     "TOTAL EN EUROS": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -1180,8 +1235,7 @@
             "value": "TOTAL IN EUROS"
           }
         }
-      },
-      "extractionState": "manual"
+      }
     },
     "Taux appliqué": {
       "extractionState": "manual",
@@ -1260,6 +1314,17 @@
         }
       }
     },
+    "Version %@ (%@)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version %@ (%@)"
+          }
+        }
+      }
+    },
     "Viêt Nam": {
       "extractionState": "manual",
       "localizations": {
@@ -1283,21 +1348,21 @@
       }
     },
     "dont %@ %@ de pourboire": {
+      "extractionState": "manual",
       "localizations": {
-        "fr": {
-          "stringUnit": {
-            "state": "new",
-            "value": "dont %1$@ %2$@ de pourboire"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "including %@ %@ tip"
           }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": "dont %1$@ %2$@ de pourboire"
+          }
         }
-      },
-      "extractionState": "manual"
+      }
     },
     "dont %@ de pourboire": {
       "extractionState": "manual",
@@ -1339,6 +1404,17 @@
           "stringUnit": {
             "state": "new",
             "value": "soit %1$@ %2$@"
+          }
+        }
+      }
+    },
+    "À propos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About"
           }
         }
       }
