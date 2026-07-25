@@ -1,6 +1,290 @@
 {
   "sourceLanguage": "fr",
   "strings": {
+    " : %@": {},
+    "%": {},
+    "%@": {},
+    "%@ %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "%@ %@ → %@ %@ rendus": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ %2$@ → %3$@ %4$@ rendus"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ %@ → %@ %@ given back"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "%@ fois %@ %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ fois %2$@ %3$@"
+          }
+        }
+      }
+    },
+    "%@ — taux enregistrés conservés.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ — saved rates kept."
+          }
+        }
+      }
+    },
+    "%lld achats": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld purchases"
+          }
+        }
+      }
+    },
+    "%lld achats enregistrés": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld purchases recorded"
+          }
+        }
+      }
+    },
+    "%lld fois %@ %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld times %@ %@"
+          }
+        }
+      }
+    },
+    "(%@%%)": {},
+    "(%lld achats)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "(%lld purchases)"
+          }
+        }
+      }
+    },
+    "(1 achat)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "(1 purchase)"
+          }
+        }
+      }
+    },
+    "1 %@ =": {},
+    "1 achat": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 purchase"
+          }
+        }
+      }
+    },
+    "1 achat enregistré": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 purchase recorded"
+          }
+        }
+      }
+    },
+    "Achat": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Purchase"
+          }
+        }
+      }
+    },
+    "Achat enregistré": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Purchase saved"
+          }
+        }
+      }
+    },
+    "Afrique du Sud": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "South Africa"
+          }
+        }
+      }
+    },
+    "Allemagne (mark)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Germany (mark)"
+          }
+        }
+      }
+    },
+    "Annuler": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        }
+      }
+    },
+    "Aucun achat enregistré": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No purchases recorded"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Aucune connexion Internet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Internet connection"
+          }
+        }
+      }
+    },
+    "Australie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Australia"
+          }
+        }
+      }
+    },
+    "Autriche (schilling)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Austria (schilling)"
+          }
+        }
+      }
+    },
+    "BILAN DE VOYAGE": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TRIP SUMMARY"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "BILAN DU VOYAGE": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TRIP SUMMARY"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Belgique (franc)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belgium (franc)"
+          }
+        }
+      }
+    },
+    "Brésil": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brazil"
+          }
+        }
+      }
+    },
+    "Bulgarie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulgaria"
+          }
+        }
+      }
+    },
     "COMPTOIR DE CHANGE": {
       "extractionState": "manual",
       "localizations": {
@@ -12,24 +296,509 @@
         }
       }
     },
-    "Rendu de monnaie": {
+    "Canada": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Change Due"
+            "value": "Canada"
           }
         }
       }
     },
-    "entre deux devises": {
+    "Cette action supprimera définitivement les achats enregistrés de ce voyage. Elle est irréversible.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This will permanently delete the purchases recorded for this trip. This action cannot be undone."
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Chine": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "between two currencies"
+            "value": "China"
+          }
+        }
+      }
+    },
+    "Commission": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commission"
+          }
+        }
+      }
+    },
+    "Commission en pourcentage": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commission percentage"
+          }
+        }
+      }
+    },
+    "Comptoir de change": {},
+    "Corée du Sud": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "South Korea"
+          }
+        }
+      }
+    },
+    "Cours en direct — mis à jour le %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Live rate — updated %@"
+          }
+        }
+      }
+    },
+    "Cours indisponible": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rates unavailable"
+          }
+        }
+      }
+    },
+    "Cumule tes achats ici pour retrouver un bilan complet en fin de voyage.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Track your purchases here to get a complete summary at the end of your trip."
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Danemark": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Denmark"
+          }
+        }
+      }
+    },
+    "Devise du prix": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Price currency"
+          }
+        }
+      }
+    },
+    "Devise payée": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Currency paid"
+          }
+        }
+      }
+    },
+    "Données de cours illisibles": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unreadable rate data"
+          }
+        }
+      }
+    },
+    "DÉTAIL DES ACHATS": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PURCHASE DETAILS"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Délai d'attente dépassé": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Request timed out"
+          }
+        }
+      }
+    },
+    "Effacer l'historique ?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear history?"
+          }
+        }
+      }
+    },
+    "Enregistre un achat depuis l'écran principal pour construire ton bilan de voyage.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save a purchase from the main screen to build your trip summary."
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Enregistrer cet achat": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save this purchase"
+          }
+        }
+      }
+    },
+    "Espagne (peseta)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spain (peseta)"
+          }
+        }
+      }
+    },
+    "Ex. café, souvenir, taxi…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "E.g. coffee, souvenir, taxi…"
+          }
+        }
+      }
+    },
+    "Exporter le bilan en PDF": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export summary as PDF"
+          }
+        }
+      }
+    },
+    "Fermer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
+          }
+        }
+      }
+    },
+    "Finlande (mark)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finland (mark)"
+          }
+        }
+      }
+    },
+    "France (franc)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "France (franc)"
+          }
+        }
+      }
+    },
+    "Grèce (drachme)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Greece (drachma)"
+          }
+        }
+      }
+    },
+    "Généré le %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Generated on %@"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Historique des achats": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Purchase history"
+          }
+        }
+      }
+    },
+    "Historique des achats, %lld enregistrés": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Purchase history, %lld recorded"
+          }
+        }
+      }
+    },
+    "Hong Kong": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hong Kong"
+          }
+        }
+      }
+    },
+    "Hongrie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hungary"
+          }
+        }
+      }
+    },
+    "Il manque %@ %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Missing %@ %@"
+          }
+        }
+      }
+    },
+    "Inde": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "India"
+          }
+        }
+      }
+    },
+    "Indonésie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indonesia"
+          }
+        }
+      }
+    },
+    "Inverser les deux devises": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Swap the two currencies"
+          }
+        }
+      }
+    },
+    "Irlande (livre)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ireland (pound)"
+          }
+        }
+      }
+    },
+    "Islande": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Iceland"
+          }
+        }
+      }
+    },
+    "Israël": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Israel"
+          }
+        }
+      }
+    },
+    "Italie (lire)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Italy (lira)"
+          }
+        }
+      }
+    },
+    "Japon": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Japan"
+          }
+        }
+      }
+    },
+    "La position n'a pas pu être relevée lors de l'enregistrement de cet achat.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The location couldn't be recorded when this purchase was saved."
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Le montant reçu représente %@ %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The amount received equals %@ %@."
+          }
+        }
+      }
+    },
+    "Le montant reçu représente %@ %@. (commission %@% incluse)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The amount received equals %@ %@. (%@% commission included)"
+          }
+        }
+      }
+    },
+    "Libellé (optionnel)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Label (optional)"
+          }
+        }
+      }
+    },
+    "Lieu de l'achat": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Purchase location"
+          }
+        }
+      }
+    },
+    "Lieu non disponible": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Location unavailable"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Luxembourg (franc)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Luxembourg (franc)"
           }
         }
       }
@@ -56,211 +825,24 @@
         }
       }
     },
-    "soit": {
+    "Malaisie": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "i.e."
+            "value": "Malaysia"
           }
         }
       }
     },
-    "OK": {
+    "Mexique": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Done"
-          }
-        }
-      }
-    },
-    "Devise payée": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Currency paid"
-          }
-        }
-      }
-    },
-    "Devise du prix": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Price currency"
-          }
-        }
-      }
-    },
-    "Commission": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Commission"
-          }
-        }
-      }
-    },
-    "Rendre la monnaie en": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Give change in"
-          }
-        }
-      }
-    },
-    "Prix à payer (en %@)": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Price to pay (in %@)"
-          }
-        }
-      }
-    },
-    "Montant reçu (en %@)": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Amount received (in %@)"
-          }
-        }
-      }
-    },
-    "Taux personnalisé — référence : %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Custom rate — reference: %@"
-          }
-        }
-      }
-    },
-    "Taux de conversion officiel figé (irrévocable)": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Official fixed conversion rate (irrevocable)"
-          }
-        }
-      }
-    },
-    "Cours en direct — mis à jour le %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Live rate — updated %@"
-          }
-        }
-      }
-    },
-    "Taux enregistrés — tire vers le bas pour actualiser": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Saved rates — pull to refresh"
-          }
-        }
-      }
-    },
-    "Le montant reçu représente %@ %@.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The amount received equals %@ %@."
-          }
-        }
-      }
-    },
-    "Le montant reçu représente %@ %@. (commission %@% incluse)": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The amount received equals %@ %@. (%@% commission included)"
-          }
-        }
-      }
-    },
-    "⚠️ Ce taux s'écarte de %@% du cours de référence — vérifie-le avant de rendre la monnaie.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "⚠️ This rate differs by %@% from the reference — double-check it before giving change."
-          }
-        }
-      }
-    },
-    "Inverser les deux devises": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Swap the two currencies"
-          }
-        }
-      }
-    },
-    "Taux de change": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Exchange rate"
-          }
-        }
-      }
-    },
-    "Commission en pourcentage": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Commission percentage"
-          }
-        }
-      }
-    },
-    "Rétablir le taux de référence": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reset to reference rate"
+            "value": "Mexico"
           }
         }
       }
@@ -276,13 +858,13 @@
         }
       }
     },
-    "%lld fois %@ %@": {
+    "Monnaie à rendre : %@ %@.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld times %@ %@"
+            "value": "Change to give: %@ %@."
           }
         }
       }
@@ -298,57 +880,217 @@
         }
       }
     },
-    "Monnaie à rendre : %@ %@.": {
+    "Montant reçu (en %@)": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Change to give: %@ %@."
+            "value": "Amount received (in %@)"
           }
         }
       }
     },
-    "Il manque %@ %@": {
+    "Norvège": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Missing %@ %@"
+            "value": "Norway"
           }
         }
       }
     },
-    "Aucune connexion Internet": {
+    "Nouveau voyage": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "No Internet connection"
+            "value": "New trip"
           }
         }
       }
     },
-    "Délai d'attente dépassé": {
+    "Nouvelle-Zélande": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Request timed out"
+            "value": "New Zealand"
           }
         }
       }
     },
-    "Serveur des cours injoignable": {
+    "OK": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rate server unreachable"
+            "value": "Done"
+          }
+        }
+      }
+    },
+    "Options du journal": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Journal options"
+          }
+        }
+      }
+    },
+    "Pays-Bas (florin)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Netherlands (guilder)"
+          }
+        }
+      }
+    },
+    "Philippines": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Philippines"
+          }
+        }
+      }
+    },
+    "Pologne": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poland"
+          }
+        }
+      }
+    },
+    "Portugal (escudo)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Portugal (escudo)"
+          }
+        }
+      }
+    },
+    "Prix à payer (en %@)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Price to pay (in %@)"
+          }
+        }
+      }
+    },
+    "Rendre la monnaie en": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Give change in"
+          }
+        }
+      }
+    },
+    "Rendu": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change"
+          }
+        }
+      }
+    },
+    "Rendu de monnaie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change Due"
+          }
+        }
+      }
+    },
+    "Reçu": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Received"
+          }
+        }
+      }
+    },
+    "Reçu %@ %@ · rendu %@ %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Reçu %1$@ %2$@ · rendu %3$@ %4$@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Received %@ %@ · change %@ %@"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Roumanie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Romania"
+          }
+        }
+      }
+    },
+    "Royaume-Uni": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "United Kingdom"
+          }
+        }
+      }
+    },
+    "Réinitialiser le calcul en cours": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset the current calculation"
           }
         }
       }
@@ -364,39 +1106,291 @@
         }
       }
     },
-    "Cours indisponible": {
+    "République tchèque": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rates unavailable"
+            "value": "Czech Republic"
           }
         }
       }
     },
-    "Données de cours illisibles": {
+    "Rétablir le taux de référence": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Unreadable rate data"
+            "value": "Reset to reference rate"
           }
         }
       }
     },
-    "%@ — taux enregistrés conservés.": {
+    "Serveur des cours injoignable": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ — saved rates kept."
+            "value": "Rate server unreachable"
           }
         }
       }
-    }
+    },
+    "Singapour": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Singapore"
+          }
+        }
+      }
+    },
+    "Suisse": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switzerland"
+          }
+        }
+      }
+    },
+    "Supprimer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete"
+          }
+        }
+      }
+    },
+    "Supprimer cet achat": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete this purchase"
+          }
+        }
+      }
+    },
+    "Suède": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sweden"
+          }
+        }
+      }
+    },
+    "TOTAL EN EUROS": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TOTAL IN EUROS"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Taux appliqué": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rate applied"
+          }
+        }
+      }
+    },
+    "Taux de change": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exchange rate"
+          }
+        }
+      }
+    },
+    "Taux de conversion officiel figé (irrévocable)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Official fixed conversion rate (irrevocable)"
+          }
+        }
+      }
+    },
+    "Taux enregistrés — tire vers le bas pour actualiser": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saved rates — pull to refresh"
+          }
+        }
+      }
+    },
+    "Taux personnalisé — référence : %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Custom rate — reference: %@"
+          }
+        }
+      }
+    },
+    "Thaïlande": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thailand"
+          }
+        }
+      }
+    },
+    "Turquie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turkey"
+          }
+        }
+      }
+    },
+    "Viêt Nam": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vietnam"
+          }
+        }
+      }
+    },
+    "Zone euro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eurozone"
+          }
+        }
+      }
+    },
+    "dont %@ %@ de pourboire": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": "dont %1$@ %2$@ de pourboire"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "including %@ %@ tip"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "dont %@ de pourboire": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "including %@ tip"
+          }
+        }
+      }
+    },
+    "dont pourboire": {},
+    "entre deux devises": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "between two currencies"
+          }
+        }
+      }
+    },
+    "soit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "i.e."
+          }
+        }
+      }
+    },
+    "soit %@ %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": "soit %1$@ %2$@"
+          }
+        }
+      }
+    },
+    "États-Unis": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "United States"
+          }
+        }
+      }
+    },
+    "×": {},
+    "≈ %@ €": {},
+    "⚠️ Ce taux s'écarte de %@% du cours de référence — vérifie-le avant de rendre la monnaie.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⚠️ This rate differs by %@% from the reference — double-check it before giving change."
+          }
+        }
+      }
+    },
+    "⚠️ Ce taux s'écarte de %@%% du cours de référence — vérifie-le avant de rendre la monnaie.": {},
+    "📍 %@": {}
   },
   "version": "1.0"
 }

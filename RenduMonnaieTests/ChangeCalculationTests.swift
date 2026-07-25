@@ -61,4 +61,33 @@ struct ChangeCalculationTests {
         let c = ChangeCalculation(rate: 1.2, price: 10, received: 20)
         #expect(c.effectiveRate == 1.2)
     }
+
+    @Test func montantDeCommissionRetenue() {
+        // 100 unités reçues, taux 1, commission 10 % → 10 retenus dans la devise du prix.
+        let c = ChangeCalculation(rate: 1, price: 45, received: 100, commissionPercent: 10)
+        #expect(abs(c.commissionAmount - 10) < 1e-9)
+    }
+
+    @Test func commissionNulleNeRetientRien() {
+        let c = ChangeCalculation(rate: 1.2, price: 10, received: 20)
+        #expect(c.commissionAmount == 0)
+    }
+
+    @Test func pourboireEnPourcentDonneLeBonMontant() {
+        // 10 % d'un prix de 50 → 5, soit 10 % à nouveau.
+        let montant = ChangeCalculation.tipAmount(price: 50, input: 10, isPercent: true)
+        #expect(abs(montant - 5) < 1e-9)
+        #expect(ChangeCalculation.tipPercent(price: 50, input: 10, isPercent: true) == 10)
+    }
+
+    @Test func pourboireEnMontantDonneLeBonPourcentage() {
+        // 5 sur un prix de 50 → 10 %.
+        let pourcent = ChangeCalculation.tipPercent(price: 50, input: 5, isPercent: false)
+        #expect(abs(pourcent - 10) < 1e-9)
+        #expect(ChangeCalculation.tipAmount(price: 50, input: 5, isPercent: false) == 5)
+    }
+
+    @Test func pourboireSansPrixNeDivisePasParZero() {
+        #expect(ChangeCalculation.tipPercent(price: 0, input: 5, isPercent: false) == 0)
+    }
 }

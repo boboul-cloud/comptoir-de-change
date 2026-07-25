@@ -15,6 +15,14 @@ struct CashLine: Identifiable, Equatable, Sendable {
     var total: Double { value * Double(count) }
 }
 
+/// Suggestion de règlement : un montant rond, arrondi à la dizaine supérieure, mis en avant
+/// comme solution principale ; le billet entier existant qui couvrirait aussi le montant
+/// n'est qu'une information secondaire, quand il diffère du montant arrondi.
+struct PaymentSuggestion: Equatable, Sendable {
+    let roundedAmount: Double
+    let singleBill: Double?
+}
+
 extension Currency {
 
     /// Arrondit un montant au plus proche multiple de l'incrément de caisse
@@ -42,5 +50,15 @@ extension Currency {
             remaining -= count * step
         }
         return lines
+    }
+
+    /// Montant arrondi à la dizaine supérieure permettant de régler `amount` sans faire
+    /// l'appoint au centime près, accompagné (à titre indicatif) du billet entier existant
+    /// qui couvrirait aussi le montant, s'il existe et diffère du montant arrondi.
+    func paymentSuggestion(coveringAtLeast amount: Double) -> PaymentSuggestion? {
+        guard amount > 0 else { return nil }
+        let roundedAmount = (amount / 10).rounded(.up) * 10
+        let bill = denominations.sorted().first(where: { $0 >= amount - 1e-9 })
+        return PaymentSuggestion(roundedAmount: roundedAmount, singleBill: bill == roundedAmount ? nil : bill)
     }
 }

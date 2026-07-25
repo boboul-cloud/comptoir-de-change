@@ -109,6 +109,8 @@ enum CurrencyCatalog {
         .init(code: "TRY", flag: "🇹🇷", country: "Turquie"),
         .init(code: "USD", flag: "🇺🇸", country: "États-Unis",
               denominations: [100, 50, 20, 10, 5, 1, 0.25, 0.1, 0.05, 0.01]),
+        .init(code: "VND", flag: "🇻🇳", country: "Viêt Nam", digits: 0,
+              denominations: [500000, 200000, 100000, 50000, 20000, 10000, 5000, 2000, 1000, 500, 200]),
         .init(code: "ZAR", flag: "🇿🇦", country: "Afrique du Sud"),
     ]
 

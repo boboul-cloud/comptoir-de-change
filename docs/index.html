@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comptoir de change — rendu de monnaie entre deux devises</title>
+<meta name="description" content="Application iOS de calcul du rendu de monnaie entre deux devises, avec journal d'achats de voyage et bilan exportable en PDF.">
+<link rel="icon" href="assets/app-icon.png">
+<style>
+  :root {
+    --paper: #f5f2ed;
+    --card: #ffffff;
+    --card-line: #ded9cc;
+    --ink: #1a1c1a;
+    --ink-soft: #5b6058;
+    --board: #1c1f1c;
+    --cream: #f2ede3;
+    --green: #4d8c5c;
+    --gold: #d6a84a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #121412;
+      --card: #1c1e1c;
+      --card-line: #333831;
+      --ink: #f2ede3;
+      --ink-soft: #a9ada5;
+      --board: #0e100e;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+  header.hero {
+    padding: 64px 0 40px;
+    text-align: center;
+  }
+  .eyebrow {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--green);
+    text-transform: uppercase;
+  }
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin: 8px 0 4px;
+    letter-spacing: -0.02em;
+  }
+  .tagline {
+    color: var(--ink-soft);
+    font-size: 1.15rem;
+    max-width: 44ch;
+    margin: 0 auto;
+  }
+  .app-icon {
+    width: 88px;
+    height: 88px;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.18);
+    margin-bottom: 20px;
+  }
+  .cta-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 28px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid var(--card-line);
+  }
+  .btn.primary {
+    background: var(--green);
+    color: #fff;
+    border-color: transparent;
+  }
+  .btn.ghost {
+    color: var(--ink);
+    background: var(--card);
+  }
+  .screenshot-row {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 48px 0;
+  }
+  .screenshot-row img {
+    width: 260px;
+    max-width: 80vw;
+    border-radius: 22px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.22);
+    border: 1px solid var(--card-line);
+  }
+  section.features {
+    padding: 40px 0 64px;
+  }
+  h2 {
+    font-size: 1.6rem;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-line);
+    border-radius: 16px;
+    padding: 22px;
+  }
+  .card h3 {
+    margin: 0 0 8px;
+    font-size: 1.02rem;
+  }
+  .card p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+  }
+  .ticket {
+    background: var(--board);
+    color: var(--cream);
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+    margin: 8px 0 64px;
+  }
+  .ticket .label {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: rgba(242,237,227,0.5);
+    text-transform: uppercase;
+  }
+  .ticket .amount {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-weight: 700;
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    margin: 8px 0;
+  }
+  .ticket .sub {
+    color: var(--gold);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.1em;
+    font-size: 0.85rem;
+  }
+  footer {
+    text-align: center;
+    padding: 40px 0 60px;
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+  }
+  footer a { color: var(--ink-soft); }
+  footer nav { margin-bottom: 12px; }
+  footer nav a { margin: 0 10px; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <img class="app-icon" src="assets/app-icon.png" alt="">
+      <div class="eyebrow">Comptoir de change</div>
+      <h1>Le rendu de monnaie, sans erreur</h1>
+      <p class="tagline">
+        Calcule le rendu de monnaie entre deux devises avec le détail des billets
+        et pièces, et garde un bilan de tes achats pour ton prochain voyage.
+      </p>
+      <div class="cta-row">
+        <a class="btn primary" href="https://github.com/boboul-cloud/comptoir-de-change">Voir le code sur GitHub</a>
+        <a class="btn ghost" href="privacy.html">Politique de confidentialité</a>
+      </div>
+    </header>
+
+    <div class="screenshot-row">
+      <img src="assets/screenshot-main.png" alt="Écran principal du calcul de rendu de monnaie">
+      <img src="assets/screenshot-header.png" alt="Détail du billetage à rendre">
+    </div>
+
+    <div class="ticket">
+      <div class="label">Monnaie à rendre</div>
+      <div class="amount">1577128</div>
+      <div class="sub">🇻🇳 VND · soit 60.00 🇺🇸 USD</div>
+    </div>
+
+    <section class="features">
+      <h2>Ce que l'app sait faire</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Rendu en billets et pièces</h3>
+          <p>Décomposition optimale par dénominations réelles de chaque devise — le yen sans centimes, le franc suisse arrondi à 0,05, etc.</p>
+        </div>
+        <div class="card">
+          <h3>Taux en direct</h3>
+          <p>Cours de la BCE via l'API Frankfurter, mis en cache localement avec une table de secours hors ligne.</p>
+        </div>
+        <div class="card">
+          <h3>Commission &amp; pourboire</h3>
+          <p>Marge de change optionnelle, pourboire en montant ou en pourcentage du prix.</p>
+        </div>
+        <div class="card">
+          <h3>Journal d'achats de voyage</h3>
+          <p>Enregistre chaque calcul avec un libellé et le lieu relevé au moment de la validation.</p>
+        </div>
+        <div class="card">
+          <h3>Bilan &amp; export PDF</h3>
+          <p>Total en euros et par devise, détail de chaque achat groupé par jour, exportable en PDF prêt à partager.</p>
+        </div>
+        <div class="card">
+          <h3>Écran client</h3>
+          <p>Retourne le téléphone pour afficher le détail en toute transparence côté client.</p>
+        </div>
+        <div class="card">
+          <h3>Anciennes devises</h3>
+          <p>Franc, mark, lire, peseta… converties au taux irrévocable de passage à l'euro.</p>
+        </div>
+        <div class="card">
+          <h3>Accessible &amp; bilingue</h3>
+          <p>Thème clair/sombre, Dynamic Type, VoiceOver, et suit automatiquement la langue de l'appareil.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <nav>
+      <a href="privacy.html">Confidentialité</a>
+      <a href="https://github.com/boboul-cloud/comptoir-de-change">Code source</a>
+      <a href="https://github.com/boboul-cloud/comptoir-de-change/blob/main/LICENSE">Licence MIT</a>
+    </nav>
+    Comptoir de change — projet open source, non affilié à une institution financière.
+  </footer>
+</body>
+</html>

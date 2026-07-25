@@ -50,4 +50,42 @@ struct CashBreakdownTests {
         #expect(eur.makeChange(for: 0).isEmpty)
         #expect(eur.makeChange(for: -10).isEmpty)
     }
+
+    @Test func suggestionProposeLaDizaineSuperieureEtLeBilletEnInformation() {
+        let eur = CurrencyCatalog.currency("EUR")
+        // 32,50 € à fournir : la dizaine supérieure (40) est mise en avant, tandis que le
+        // billet entier existant qui couvrirait aussi le montant (50) n'est qu'une information.
+        let suggestion = eur.paymentSuggestion(coveringAtLeast: 32.50)
+        #expect(suggestion == PaymentSuggestion(roundedAmount: 40, singleBill: 50))
+    }
+
+    @Test func suggestionSansBilletDistinctNOmetPasDinformationRedondante() {
+        let usd = CurrencyCatalog.currency("USD")
+        // 17,20 USD : la dizaine supérieure (20) coïncide avec le plus petit billet qui
+        // suffit ; l'information sur le billet entier est alors superflue.
+        let suggestion = usd.paymentSuggestion(coveringAtLeast: 17.20)
+        #expect(suggestion == PaymentSuggestion(roundedAmount: 20, singleBill: nil))
+    }
+
+    @Test func suggestionArrondieALaDizaineSuperieureQuandAucuneCoupureNeSuffit() {
+        let eur = CurrencyCatalog.currency("EUR")
+        // Aucun billet ne dépasse 500 € : pas d'information sur un billet entier possible.
+        let suggestion = eur.paymentSuggestion(coveringAtLeast: 803)
+        #expect(suggestion == PaymentSuggestion(roundedAmount: 810, singleBill: nil))
+        #expect(suggestion?.roundedAmount == 810)
+    }
+
+    @Test func suggestionArrondieALaDizaineSuperieurePourGrosseSomme() {
+        let chf = CurrencyCatalog.currency("CHF")
+        // 1250,03 CHF dépasse la plus grande coupure (1000) : on arrondit à la dizaine
+        // supérieure plutôt que de détailler une combinaison précise de coupures.
+        let suggestion = chf.paymentSuggestion(coveringAtLeast: 1250.03)
+        #expect(suggestion == PaymentSuggestion(roundedAmount: 1260, singleBill: nil))
+    }
+
+    @Test func suggestionMontantNulOuNegatifNeRenvoieRien() {
+        let eur = CurrencyCatalog.currency("EUR")
+        #expect(eur.paymentSuggestion(coveringAtLeast: 0) == nil)
+        #expect(eur.paymentSuggestion(coveringAtLeast: -5) == nil)
+    }
 }

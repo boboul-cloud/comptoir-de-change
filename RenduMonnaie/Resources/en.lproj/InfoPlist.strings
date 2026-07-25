@@ -1,0 +1,2 @@
+/* Message shown when the app requests location access, to record where each purchase was made. */
+"NSLocationWhenInUseUsageDescription" = "Used to record the location of each purchase saved to your trip summary.";

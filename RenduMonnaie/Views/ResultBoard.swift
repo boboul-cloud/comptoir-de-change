@@ -16,6 +16,8 @@ struct ResultBoard: View {
     let secondaryCurrency: Currency
     let missingAmount: Double
     let priceCurrency: Currency
+    var tipAmount: Double = 0
+    var tipPercent: Double = 0
 
     private var mainText: String { Fmt.amount(max(mainAmount, 0), currency: mainCurrency) }
 
@@ -64,6 +66,21 @@ struct ResultBoard: View {
                         .foregroundStyle(.white.opacity(0.5))
                 }
                 .padding(.top, 14)
+
+                if tipAmount > 0 {
+                    HStack(alignment: .firstTextBaseline, spacing: 8) {
+                        Text("dont pourboire")
+                            .scaledFont(11, design: .monospaced)
+                            .foregroundStyle(.white.opacity(0.5))
+                        Text("\(Fmt.amount(tipAmount, currency: priceCurrency)) \(priceCurrency.code)")
+                            .scaledFont(13, weight: .semibold, design: .monospaced)
+                            .foregroundStyle(Color.accentGold)
+                        Text("(\(String(format: "%.1f", tipPercent))%)")
+                            .scaledFont(11, design: .monospaced)
+                            .foregroundStyle(.white.opacity(0.5))
+                    }
+                    .padding(.top, 8)
+                }
             }
         }
         .padding(.horizontal, 22)
@@ -79,7 +96,13 @@ struct ResultBoard: View {
             let manque = Fmt.amount(missingAmount, currency: priceCurrency)
             return String(localized: "Montant insuffisant. Il manque \(manque) \(priceCurrency.code).")
         }
-        return String(localized: "Monnaie à rendre : \(mainText) \(mainCurrency.code).")
+        var summary = String(localized: "Monnaie à rendre : \(mainText) \(mainCurrency.code).")
+        if tipAmount > 0 {
+            let tip = Fmt.amount(tipAmount, currency: priceCurrency)
+            let pct = String(format: "%.1f", tipPercent)
+            summary += " " + String(localized: "Dont pourboire : \(tip) \(priceCurrency.code) (\(pct)%).")
+        }
+        return summary
     }
 }
 

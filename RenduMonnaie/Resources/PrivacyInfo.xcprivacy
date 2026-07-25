@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+	L'app n'envoie aucune donnée à un serveur qui nous appartient : les taux
+	de change viennent d'API publiques tierces (Frankfurter / open.er-api.com,
+	sans identifiant utilisateur), et le géocodage inverse du lieu d'achat
+	passe uniquement par le service Apple CLGeocoder. Le journal d'achats et
+	le lieu restent stockés en local (UserDefaults) sur l'appareil.
+	-->
+	<key>NSPrivacyTracking</key>
+	<false/>
+	<key>NSPrivacyTrackingDomains</key>
+	<array/>
+	<key>NSPrivacyCollectedDataTypes</key>
+	<array/>
+	<key>NSPrivacyAccessedAPITypes</key>
+	<array>
+		<dict>
+			<key>NSPrivacyAccessedAPIType</key>
+			<string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+			<key>NSPrivacyAccessedAPITypeReasons</key>
+			<array>
+				<!-- Préférences et données propres à l'app uniquement (devises,
+				     cache des taux, journal d'achats) — aucun App Group. -->
+				<string>CA92.1</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

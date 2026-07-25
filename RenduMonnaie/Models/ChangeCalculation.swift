@@ -34,6 +34,10 @@ struct ChangeCalculation: Equatable, Sendable {
         effectiveRate != 0 ? changeInPriceCurrency / effectiveRate : 0
     }
 
+    /// Montant retenu par le comptoir au titre de la commission, dans la devise du prix
+    /// (écart entre une conversion au taux plein et la conversion effectivement appliquée).
+    var commissionAmount: Double { received * rate * commissionPercent / 100 }
+
     /// `true` si le montant reçu ne couvre pas le prix (tolérance d'un demi-centime).
     var isInsufficient: Bool { changeInPriceCurrency < -0.005 }
 
@@ -46,5 +50,17 @@ extension ChangeCalculation {
     static func deviationPercent(applied: Double, reference: Double) -> Double {
         guard reference != 0 else { return 0 }
         return abs((applied - reference) / reference) * 100
+    }
+
+    /// Montant du pourboire, à partir d'une saisie exprimée en montant ou en pourcentage du prix.
+    static func tipAmount(price: Double, input: Double, isPercent: Bool) -> Double {
+        isPercent ? price * input / 100 : input
+    }
+
+    /// Pourcentage que représente le pourboire par rapport au prix, quelle que soit l'unité saisie.
+    static func tipPercent(price: Double, input: Double, isPercent: Bool) -> Double {
+        guard !isPercent else { return input }
+        guard price != 0 else { return 0 }
+        return input / price * 100
     }
 }

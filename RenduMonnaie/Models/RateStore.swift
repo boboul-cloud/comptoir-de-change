@@ -2,8 +2,10 @@
 //  RateStore.swift
 //  Comptoir de change
 //
-//  Fournisseur de taux de change : API Frankfurter (données BCE),
-//  avec cache local, table de secours hors ligne et devises à taux figé.
+//  Fournisseur de taux de change : API Frankfurter (données BCE) en source
+//  principale, complétée par une API de secours pour les devises que la BCE
+//  ne publie pas (ex. le dong vietnamien), avec cache local et table de
+//  secours hors ligne pour les devises à taux figé.
 //
 
 import Foundation
@@ -12,6 +14,12 @@ import Observation
 /// Réponse de l'API Frankfurter (données BCE).
 private struct FrankfurterResponse: Decodable, Sendable {
     let date: String
+    let rates: [String: Double]
+}
+
+/// Réponse de l'API de secours (exchangerate-api.com), utilisée uniquement
+/// pour les devises absentes du flux BCE.
+private struct SecondaryRatesResponse: Decodable, Sendable {
     let rates: [String: Double]
 }
 
@@ -29,6 +37,8 @@ final class RateStore {
 
     private let session: URLSession
     private let endpoint = URL(string: "https://api.frankfurter.app/latest?from=EUR")!
+    /// N'est interrogée que pour les devises absentes de la réponse Frankfurter/BCE.
+    private let secondaryEndpoint = URL(string: "https://open.er-api.com/v6/latest/EUR")!
 
     /// Table de secours utilisée hors ligne ou en cas d'échec réseau.
     private static let fallback: [String: Double] = [
@@ -39,7 +49,7 @@ final class RateStore {
         "ISK": 143.408544, "JPY": 186.441599, "KRW": 1677.791699, "MXN": 19.874531,
         "MYR": 4.670304, "NOK": 10.935907, "NZD": 1.963548, "PHP": 70.593651,
         "PLN": 4.32891, "RON": 5.237867, "SEK": 11.063988, "SGD": 1.473889,
-        "THB": 38.667479, "TRY": 53.998092, "USD": 1.1431, "ZAR": 18.718743,
+        "THB": 38.667479, "TRY": 53.998092, "USD": 1.1431, "VND": 27500.0, "ZAR": 18.718743,
     ]
 
     init(session: URLSession = .shared) {
@@ -54,9 +64,14 @@ final class RateStore {
         }
     }
 
-    /// Superpose l'euro (= 1) et les taux irrévocables des anciennes devises.
+    /// Complète les devises absentes (nouvelles devises ajoutées après un cache existant,
+    /// ou devises non couvertes par l'API), puis superpose l'euro (= 1) et les taux
+    /// irrévocables des anciennes devises.
     private static func withFixedRates(_ base: [String: Double]) -> [String: Double] {
         var dict = base
+        for (code, rate) in fallback where dict[code] == nil {
+            dict[code] = rate
+        }
         dict["EUR"] = 1
         for (code, rate) in CurrencyCatalog.legacyRatesEUR {
             dict[code] = rate
@@ -76,25 +91,25 @@ final class RateStore {
         defer { isLoading = false }
 
         do {
-            var request = URLRequest(url: endpoint)
-            request.timeoutInterval = 12
-            request.cachePolicy = .reloadIgnoringLocalCacheData
-
-            let (data, response) = try await session.data(for: request)
-
-            guard let http = response as? HTTPURLResponse else {
-                throw URLError(.badServerResponse)
-            }
-            guard (200..<300).contains(http.statusCode) else {
-                throw URLError(.badServerResponse, userInfo: [NSLocalizedDescriptionKey: "HTTP \(http.statusCode)"])
-            }
-
-            let decoded = try JSONDecoder().decode(FrankfurterResponse.self, from: data)
+            let decoded = try await fetchJSON(FrankfurterResponse.self, from: endpoint)
 
             var merged = ratesEUR
             for (code, value) in decoded.rates {
                 merged[code] = value
             }
+
+            // Devises que la BCE ne publie pas (ex. VND) : on va chercher un taux réel
+            // auprès d'une source de secours plutôt que de garder la valeur figée.
+            let missing = Set(Self.fallback.keys)
+                .subtracting(decoded.rates.keys)
+                .subtracting(["EUR"])
+            if !missing.isEmpty,
+               let secondary = try? await fetchJSON(SecondaryRatesResponse.self, from: secondaryEndpoint) {
+                for code in missing {
+                    if let value = secondary.rates[code] { merged[code] = value }
+                }
+            }
+
             merged = Self.withFixedRates(merged)   // euro + devises figées inviolables
 
             ratesEUR = merged
@@ -106,6 +121,23 @@ final class RateStore {
         } catch {
             lastError = Self.message(for: error)
         }
+    }
+
+    private func fetchJSON<T: Decodable>(_ type: T.Type, from url: URL) async throws -> T {
+        var request = URLRequest(url: url)
+        request.timeoutInterval = 12
+        request.cachePolicy = .reloadIgnoringLocalCacheData
+
+        let (data, response) = try await session.data(for: request)
+
+        guard let http = response as? HTTPURLResponse else {
+            throw URLError(.badServerResponse)
+        }
+        guard (200..<300).contains(http.statusCode) else {
+            throw URLError(.badServerResponse, userInfo: [NSLocalizedDescriptionKey: "HTTP \(http.statusCode)"])
+        }
+
+        return try JSONDecoder().decode(T.self, from: data)
     }
 
     /// Message d'erreur adapté à la nature de la panne réseau.
