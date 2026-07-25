@@ -95,6 +95,14 @@ struct PurchaseReportView: View {
             : String(localized: "\(summary.count) achats enregistrés")
     }
 
+    /// Même formulation que le détail des totaux dans l'historique (clés de
+    /// catalogue partagées, pour éviter tout doublon de symbole généré).
+    private func countLabel(for count: Int) -> String {
+        count == 1
+            ? String(localized: "1 achat")
+            : String(localized: "\(count) achats")
+    }
+
     private func totalRow(_ total: JournalSummary.CurrencyTotal) -> some View {
         let currency = CurrencyCatalog.currency(total.code)
         return HStack(spacing: 8) {
@@ -103,7 +111,7 @@ struct PurchaseReportView: View {
             Spacer()
             Text("\(Fmt.amount(total.totalPrice + total.totalTip, currency: currency)) \(total.code)")
                 .font(.system(size: 13, weight: .bold, design: .monospaced))
-            Text(total.count == 1 ? "(1 achat)" : "(\(total.count) achats)")
+            Text(verbatim: "(\(countLabel(for: total.count)))")
                 .font(.system(size: 11))
                 .foregroundStyle(Color.black.opacity(0.45))
         }
