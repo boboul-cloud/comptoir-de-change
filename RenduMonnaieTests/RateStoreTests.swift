@@ -77,7 +77,9 @@ struct RateStoreTests {
         let store = RateStore(session: mockedSession())
         await store.refresh()
 
-        #expect(store.lastError?.contains("connexion") == true)
+        // Le libellé exact dépend de la langue de l'appareil (String Catalog) : on
+        // vérifie qu'une erreur est bien remontée, pas son texte précis.
+        #expect(store.lastError?.isEmpty == false)
         #expect(store.ratesEUR["EUR"] == 1)   // taux de secours conservés
     }
 
