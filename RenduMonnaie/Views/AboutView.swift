@@ -3,7 +3,7 @@
 //  Comptoir de change
 //
 //  Fiche « À propos » : version de l'app et liens vers le site, la politique
-//  de confidentialité, les conditions d'utilisation et le code source.
+//  de confidentialité et les conditions d'utilisation.
 //
 
 import SwiftUI
@@ -40,8 +40,6 @@ struct AboutView: View {
                         linkRow("Conditions d'utilisation", systemImage: "doc.text", url: AboutLinks.terms)
                         Divider().overlay(Color.cardLine).padding(.leading, 52)
                         linkRow("Site web", systemImage: "globe", url: AboutLinks.website)
-                        Divider().overlay(Color.cardLine).padding(.leading, 52)
-                        linkRow("Code source (GitHub)", systemImage: "chevron.left.forwardslash.chevron.right", url: AboutLinks.repo)
                     }
                     .background(Color.cardBG, in: .rect(cornerRadius: 14))
                     .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color.cardLine, lineWidth: 1))
@@ -88,7 +86,6 @@ private enum AboutLinks {
     static let website = URL(string: "https://boboul-cloud.github.io/comptoir-de-change/")!
     static let privacy = URL(string: "https://boboul-cloud.github.io/comptoir-de-change/privacy.html")!
     static let terms = URL(string: "https://boboul-cloud.github.io/comptoir-de-change/terms.html")!
-    static let repo = URL(string: "https://github.com/boboul-cloud/comptoir-de-change")!
 }
 
 #Preview {
