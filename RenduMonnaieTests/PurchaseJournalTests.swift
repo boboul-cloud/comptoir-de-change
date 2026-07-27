@@ -17,6 +17,7 @@ private func isolatedDefaults(_ name: String) -> UserDefaults {
 
 private func entry(
     note: String = "",
+    kind: TransactionKind = .achat,
     priceCurrency: String = "EUR",
     price: Double,
     tip: Double = 0,
@@ -30,6 +31,7 @@ private func entry(
 ) -> PurchaseEntry {
     PurchaseEntry(
         note: note,
+        kind: kind,
         priceCurrencyCode: priceCurrency,
         price: price,
         tipAmount: tip,
@@ -138,5 +140,57 @@ struct PurchaseJournalTests {
         #expect(summary.summary.totals.isEmpty)
         #expect(summary.summary.count == 0)
         #expect(summary.summary.firstDate == nil)
+    }
+
+    // MARK: - Type de transaction (achat / vente)
+
+    @Test func leTypeParDefautEstAchat() {
+        #expect(entry(price: 10).kind == .achat)
+    }
+
+    @Test func persisteEtFiltreParType() {
+        let name = "test.journal.type"
+        let defaults = isolatedDefaults(name)
+
+        let first = PurchaseJournal(defaults: defaults)
+        first.add(entry(kind: .achat, price: 10))
+        first.add(entry(kind: .vente, price: 20))
+        first.add(entry(kind: .vente, price: 30))
+
+        let second = PurchaseJournal(defaults: defaults)
+        #expect(second.entries.filter { $0.kind == .achat }.count == 1)
+        #expect(second.entries.filter { $0.kind == .vente }.count == 2)
+    }
+
+    /// Un journal enregistré avant l'ajout du mode achat/vente ne contient pas la clé
+    /// `kind` : le décodage doit l'assimiler à un achat plutôt que faire échouer tout le
+    /// journal (ce qui viderait silencieusement l'historique de l'utilisateur).
+    @Test func decodeUnJournalSansCleKindCommeDesAchats() throws {
+        let name = "test.journal.retrocompat"
+        let defaults = isolatedDefaults(name)
+
+        let legacyJSON = """
+        [{
+            "id": "\(UUID().uuidString)",
+            "date": 0,
+            "note": "Café",
+            "priceCurrencyCode": "EUR",
+            "price": 4.5,
+            "tipAmount": 0,
+            "paidCurrencyCode": "USD",
+            "receivedAmount": 10,
+            "changeAmount": 5.06,
+            "changeCurrencyCode": "EUR",
+            "rate": 0.9,
+            "commissionPercent": 0,
+            "commissionAmount": 0
+        }]
+        """
+        defaults.set(Data(legacyJSON.utf8), forKey: "rendu_monnaie_purchase_journal")
+
+        let journal = PurchaseJournal(defaults: defaults)
+        #expect(journal.entries.count == 1)
+        #expect(journal.entries.first?.kind == .achat)
+        #expect(journal.entries.first?.note == "Café")
     }
 }

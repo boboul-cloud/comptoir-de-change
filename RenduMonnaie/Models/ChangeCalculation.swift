@@ -30,8 +30,14 @@ struct ChangeCalculation: Equatable, Sendable {
     var changeInPriceCurrency: Double { receivedConverted - price }
 
     /// Monnaie à rendre dans la devise payée par le client.
+    ///
+    /// Reconversion au taux brut (`rate`), pas au taux effectif : la commission n'est
+    /// prélevée qu'une fois, au moment de convertir le montant reçu (`receivedConverted`).
+    /// La reconvertir une seconde fois ici annulerait une partie de la commission —
+    /// le client récupérerait alors plus de monnaie que la commission affichée ne
+    /// devrait en laisser, et l'écart grandirait avec le taux de commission.
     var changeInPaidCurrency: Double {
-        effectiveRate != 0 ? changeInPriceCurrency / effectiveRate : 0
+        rate != 0 ? changeInPriceCurrency / rate : 0
     }
 
     /// Montant retenu par le comptoir au titre de la commission, dans la devise du prix

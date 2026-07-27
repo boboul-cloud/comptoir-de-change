@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Assistance — Comptoir de change</title>
+<link rel="icon" href="assets/app-icon.png">
+<style>
+  :root {
+    --paper: #f5f2ed; --ink: #1a1c1a; --ink-soft: #5b6058;
+    --card: #ffffff; --card-line: #ded9cc; --green: #4d8c5c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper: #121412; --ink: #f2ede3; --ink-soft: #a9ada5; --card: #1c1e1c; --card-line: #333831; }
+  }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 700px; margin: 0 auto; padding: 56px 24px 80px; }
+  a { color: var(--green); }
+  .eyebrow {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.2em;
+    color: var(--green); text-transform: uppercase;
+  }
+  h1 { margin: 8px 0 4px; font-size: 2rem; }
+  .updated { color: var(--ink-soft); font-size: 0.9rem; margin-bottom: 40px; }
+  h2 { font-size: 1.15rem; margin-top: 40px; }
+  .card {
+    background: var(--card); border: 1px solid var(--card-line);
+    border-radius: 14px; padding: 20px 24px; margin: 24px 0;
+  }
+  .lang-divider {
+    margin: 64px 0 32px; border: none; border-top: 1px solid var(--card-line);
+  }
+  footer { margin-top: 56px; color: var(--ink-soft); font-size: 0.85rem; }
+  footer a { margin-right: 14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Comptoir de change</div>
+  <h1>Assistance</h1>
+  <p class="updated">Une question, un bug à signaler, une suggestion ?</p>
+
+  <h2>Nous contacter</h2>
+  <div class="card">
+    <p style="margin:0">Écris à <a href="mailto:bob.oulhen@gmail.com">bob.oulhen@gmail.com</a> — on te répond directement.</p>
+  </div>
+
+  <h2>Questions fréquentes</h2>
+
+  <p><strong>Le taux affiché ne correspond pas à celui de ma banque ou de mon comptoir.</strong><br>
+  Le taux proposé est un taux de référence du marché (données BCE), pas celui
+  effectivement pratiqué par un établissement précis. Tu peux le remplacer par
+  ton propre taux dans l'app, et ajouter une commission si le comptoir en
+  prélève une — elle est alors calculée et affichée séparément, jamais
+  mélangée au prix.</p>
+
+  <p><strong>Comment supprimer mon historique ?</strong><br>
+  Dans l'historique, ouvre le menu (icône ••• en haut à droite) puis
+  « Nouveau voyage ». Cette action est irréversible et efface achats et
+  ventes enregistrés.</p>
+
+  <p><strong>Mes achats et ma position sont-ils envoyés quelque part ?</strong><br>
+  Non : tout reste stocké sur ton appareil. Voir le détail dans la
+  <a href="privacy.html">politique de confidentialité</a>.</p>
+
+  <p><strong>L'app fonctionne-t-elle sans connexion Internet ?</strong><br>
+  Oui, avec les derniers taux de change enregistrés. Un bandeau te signale
+  quand les taux affichés ne sont pas à jour.</p>
+
+  <hr class="lang-divider">
+
+  <div class="eyebrow">English</div>
+  <h1 style="font-size:1.6rem">Support</h1>
+  <p class="updated">A question, a bug to report, a suggestion?</p>
+
+  <h2 style="font-size:1.05rem">Contact us</h2>
+  <div class="card">
+    <p style="margin:0">Email <a href="mailto:bob.oulhen@gmail.com">bob.oulhen@gmail.com</a> — we reply directly.</p>
+  </div>
+
+  <h2 style="font-size:1.05rem">Frequently asked questions</h2>
+
+  <p><strong>The displayed rate doesn't match my bank's or exchange counter's.</strong><br>
+  The suggested rate is a market reference rate (ECB data), not the one
+  actually applied by a specific institution. You can replace it with your
+  own rate in the app, and add a commission if the counter charges one — it's
+  then calculated and shown separately, never mixed into the price.</p>
+
+  <p><strong>How do I delete my history?</strong><br>
+  In the history screen, open the menu (••• icon, top right), then
+  "New trip". This is irreversible and clears both purchases and sales.</p>
+
+  <p><strong>Are my purchases and location sent anywhere?</strong><br>
+  No — everything stays on your device. See the
+  <a href="privacy.html">privacy policy</a> for details.</p>
+
+  <p><strong>Does the app work without an Internet connection?</strong><br>
+  Yes, using the last saved exchange rates. A banner tells you when the
+  displayed rates are out of date.</p>
+
+  <footer>
+    <a href="index.html">← Retour à l'accueil</a>
+    <a href="privacy.html">Confidentialité</a>
+    <a href="terms.html">Conditions d'utilisation</a>
+  </footer>
+</div>
+</body>
+</html>

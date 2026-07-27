@@ -31,6 +31,17 @@
         }
       }
     },
+    "%@ %@ ≈ %@ %@ au taux appliqué": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ %@ ≈ %@ %@ at the applied rate"
+          }
+        }
+      }
+    },
     "%@ fois %@ %@": {
       "localizations": {
         "fr": {
@@ -85,6 +96,28 @@
         }
       }
     },
+    "%lld ventes": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld sales"
+          }
+        }
+      }
+    },
+    "%lld ventes enregistrées": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld sales recorded"
+          }
+        }
+      }
+    },
     "(%@%%)": {},
     "1 %@ =": {},
     "1 achat": {
@@ -105,6 +138,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "1 purchase recorded"
+          }
+        }
+      }
+    },
+    "1 vente": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 sale"
+          }
+        }
+      }
+    },
+    "1 vente enregistrée": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 sale recorded"
+          }
+        }
+      }
+    },
+    "= %@ %@ crédités sur le prix": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "= %@ %@ credited toward the price"
+          }
+        }
+      }
+    },
+    "= %@% du prix": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "= %@% of the price"
           }
         }
       }
@@ -186,6 +263,17 @@
         }
       }
     },
+    "Aucune vente enregistrée": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No sales recorded"
+          }
+        }
+      }
+    },
     "Australie": {
       "extractionState": "manual",
       "localizations": {
@@ -193,6 +281,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Australia"
+          }
+        }
+      }
+    },
+    "Autre devise…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Other currency…"
           }
         }
       }
@@ -215,6 +314,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "TRIP SUMMARY"
+          }
+        }
+      }
+    },
+    "BILAN DES ACHATS": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PURCHASE SUMMARY"
+          }
+        }
+      }
+    },
+    "BILAN DES VENTES": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SALES SUMMARY"
           }
         }
       }
@@ -292,6 +413,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "This will permanently delete the purchases recorded for this trip. This action cannot be undone."
+          }
+        }
+      }
+    },
+    "Cette action supprimera définitivement tous les achats et ventes enregistrés de ce voyage. Elle est irréversible.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This will permanently delete every purchase and sale recorded for this trip. This action cannot be undone."
+          }
+        }
+      }
+    },
+    "Changer l'unité du pourboire": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change the tip unit"
           }
         }
       }
@@ -385,6 +528,17 @@
         }
       }
     },
+    "Cumule tes ventes ici pour retrouver un bilan complet de ton activité.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Track your sales here to get a complete summary of your activity."
+          }
+        }
+      }
+    },
     "Danemark": {
       "extractionState": "manual",
       "localizations": {
@@ -392,6 +546,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Denmark"
+          }
+        }
+      }
+    },
+    "Devise du bilan": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Summary currency"
           }
         }
       }
@@ -440,6 +605,17 @@
         }
       }
     },
+    "DÉTAIL DES VENTES": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SALE DETAILS"
+          }
+        }
+      }
+    },
     "Délai d'attente dépassé": {
       "extractionState": "manual",
       "localizations": {
@@ -473,6 +649,17 @@
         }
       }
     },
+    "Enregistre une vente depuis l'écran principal pour construire ton bilan d'activité.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save a sale from the main screen to build your activity summary."
+          }
+        }
+      }
+    },
     "Enregistrer cet achat": {
       "extractionState": "manual",
       "localizations": {
@@ -480,6 +667,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Save this purchase"
+          }
+        }
+      }
+    },
+    "Enregistrer cette vente": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save this sale"
           }
         }
       }
@@ -584,6 +782,7 @@
       }
     },
     "Historique des achats, %@ enregistrés": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -604,6 +803,18 @@
         }
       }
     },
+    "Historique des ventes": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sales history"
+          }
+        }
+      }
+    },
+    "Historique, %@ enregistrés": {},
     "Hong Kong": {
       "extractionState": "manual",
       "localizations": {
@@ -736,6 +947,17 @@
         }
       }
     },
+    "La position n'a pas pu être relevée lors de l'enregistrement de cette vente.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The location couldn't be recorded when this sale was saved."
+          }
+        }
+      }
+    },
     "Le montant reçu représente %@ %@.": {
       "extractionState": "manual",
       "localizations": {
@@ -776,6 +998,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Purchase location"
+          }
+        }
+      }
+    },
+    "Lieu de la vente": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sale location"
           }
         }
       }
@@ -864,6 +1097,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Change to give: %@ %@."
+          }
+        }
+      }
+    },
+    "Montant du pourboire": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tip amount"
           }
         }
       }
@@ -1000,6 +1244,28 @@
         }
       }
     },
+    "Pourboire": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tip"
+          }
+        }
+      }
+    },
+    "Prix %@ + pourboire %@ = %@ %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Price %@ + tip %@ = %@ %@"
+          }
+        }
+      }
+    },
     "Prix à payer (en %@)": {
       "extractionState": "manual",
       "localizations": {
@@ -1007,6 +1273,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Price to pay (in %@)"
+          }
+        }
+      }
+    },
+    "Proposer %@ %@ (billet entier existant : %@ %@).": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suggest %@ %@ (matching whole bill available: %@ %@)."
+          }
+        }
+      }
+    },
+    "Proposer %@ %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suggest %@ %@."
           }
         }
       }
@@ -1138,6 +1426,17 @@
         }
       }
     },
+    "Saisie en gros caractères": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Large-print entry"
+          }
+        }
+      }
+    },
     "Serveur des cours injoignable": {
       "extractionState": "manual",
       "localizations": {
@@ -1204,6 +1503,17 @@
         }
       }
     },
+    "Supprimer cette vente": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete this sale"
+          }
+        }
+      }
+    },
     "Suède": {
       "extractionState": "manual",
       "localizations": {
@@ -1211,6 +1521,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sweden"
+          }
+        }
+      }
+    },
+    "TOTAL EN %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TOTAL IN %@"
           }
         }
       }
@@ -1299,6 +1620,61 @@
           "stringUnit": {
             "state": "translated",
             "value": "Turkey"
+          }
+        }
+      }
+    },
+    "Type de transaction": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Transaction type"
+          }
+        }
+      }
+    },
+    "Utiliser": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use"
+          }
+        }
+      }
+    },
+    "Utiliser cette proposition": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use this suggestion"
+          }
+        }
+      }
+    },
+    "Vente": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sale"
+          }
+        }
+      }
+    },
+    "Vente enregistrée": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sale saved"
           }
         }
       }
@@ -1420,7 +1796,17 @@
       }
     },
     "×": {},
-    "≈ %@ €": {},
+    "− commission de %@% = %@ %@ retenus par le comptoir": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "− %@% commission = %@ %@ kept by the counter"
+          }
+        }
+      }
+    },
     "⚠️ Ce taux s'écarte de %@% du cours de référence — vérifie-le avant de rendre la monnaie.": {
       "extractionState": "manual",
       "localizations": {

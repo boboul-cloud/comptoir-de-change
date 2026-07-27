@@ -6,29 +6,29 @@
 //
 
 import SwiftUI
-import UIKit
 
 struct ContentView: View {
 
     @State private var store = RateStore()
     @State private var journal = PurchaseJournal()
     @State private var locationService = LocationService()
-    @State private var orientation: UIDeviceOrientation = UIDevice.current.orientation
     @State private var showHistory = false
     @State private var showAbout = false
-    @State private var achatNote = ""
-    @State private var achatEnregistre = false
+    @State private var showAccessibleEntry = false
+    @State private var noteTransaction = ""
+    @State private var transactionEnregistree = false
 
-    // Devises et cible de rendu mémorisées entre deux lancements.
+    // Devises, cible de rendu et mode (achat/vente) mémorisés entre deux lancements.
     @AppStorage("deviseA") private var deviseA = "USD"   // devise payée par le client
     @AppStorage("deviseB") private var deviseB = "EUR"   // devise du prix / de la caisse
-    @AppStorage("rendreEnB") private var rendreEnB = true
+    @AppStorage("deviseRendue") private var deviseRendue = "EUR"   // devise choisie pour le rendu de monnaie
+    @AppStorage("modeTransaction") private var modeTransaction: TransactionKind = .achat
 
     @State private var tauxTexte = ""
     @State private var tauxPersonnalise = false
     @State private var commissionTexte = ""
-    @State private var prix = "45.00"
-    @State private var recu = "60.00"
+    @State private var prix = ""
+    @State private var recu = ""
     @State private var pourboireTexte = ""
     @State private var pourboireEnPourcent = true
 
@@ -39,8 +39,12 @@ struct ContentView: View {
 
     private var currA: Currency { CurrencyCatalog.currency(deviseA) }
     private var currB: Currency { CurrencyCatalog.currency(deviseB) }
-    private var payoutCurrency: Currency { rendreEnB ? currB : currA }
-    private var secondaryCurrency: Currency { rendreEnB ? currA : currB }
+    /// Devise choisie pour le rendu — n'importe laquelle du catalogue, pas seulement A ou B.
+    private var payoutCurrency: Currency { CurrencyCatalog.currency(deviseRendue) }
+    /// Devise de référence affichée en complément (« soit X CUR ») : l'autre des deux
+    /// devises de la transaction, sauf quand le rendu se fait déjà dans celle-ci — auquel
+    /// cas on retombe sur la devise du prix, repère universel de la transaction.
+    private var secondaryCurrency: Currency { payoutCurrency.code == currB.code ? currA : currB }
 
     // MARK: - Calculs
 
@@ -75,15 +79,67 @@ struct ContentView: View {
         currA.paymentSuggestion(coveringAtLeast: prixEnDeviseA)
     }
 
-    private var rawMain: Double {
-        rendreEnB ? calcul.changeInPriceCurrency : calcul.changeInPaidCurrency
-    }
+    private var rawMain: Double { changeAmount(in: payoutCurrency) }
     private var mainAmount: Double { payoutCurrency.roundedToCash(max(rawMain, 0)) }
     private var breakdown: [CashLine] {
         calcul.isInsufficient ? [] : payoutCurrency.makeChange(for: mainAmount)
     }
-    private var secondaryAmount: Double {
-        rendreEnB ? calcul.changeInPaidCurrency : calcul.changeInPriceCurrency
+    private var secondaryAmount: Double { changeAmount(in: secondaryCurrency) }
+
+    /// Monnaie à rendre exprimée dans n'importe quelle devise du catalogue. La devise du
+    /// prix et la devise payée restent converties via le taux (personnalisable) de la
+    /// transaction ; toute autre devise passe par le taux de marché du jour, faute de
+    /// cours personnalisé pour une paire qui n'apparaît pas dans le calcul principal.
+    private func changeAmount(in target: Currency) -> Double {
+        switch target.code {
+        case currB.code:
+            return calcul.changeInPriceCurrency
+        case currA.code:
+            return calcul.changeInPaidCurrency
+        default:
+            let rate = store.rate(from: deviseB, to: target.code)
+            return rate != 0 ? calcul.changeInPriceCurrency * rate : 0
+        }
+    }
+
+    /// Convertit un montant déjà exprimé dans la devise du prix (B) vers n'importe
+    /// quelle devise du catalogue, au taux brut de la transaction — sans effet de la
+    /// commission, qui s'affiche toujours séparément et ne doit jamais se mélanger à
+    /// une simple conversion de devise (prix ou commission elle-même).
+    private func convert(_ amountInPriceCurrency: Double, to target: Currency) -> Double {
+        switch target.code {
+        case currB.code:
+            return amountInPriceCurrency
+        case currA.code:
+            return taux != 0 ? amountInPriceCurrency / taux : 0
+        default:
+            let rate = store.rate(from: deviseB, to: target.code)
+            return rate != 0 ? amountInPriceCurrency * rate : 0
+        }
+    }
+
+    /// Contre-valeurs d'un montant (prix ou commission) dans la devise du reçu et
+    /// celle du rendu, quand elles diffèrent de la devise du prix et entre elles —
+    /// pour la transparence de l'écran client, qui ne connaît pas forcément la devise
+    /// du prix.
+    private func currencyEquivalents(for amountInPriceCurrency: Double) -> [CustomerDisplayView.CurrencyEquivalent] {
+        var seen: Set<String> = [deviseB]
+        return [currA, payoutCurrency].compactMap { currency in
+            guard seen.insert(currency.code).inserted else { return nil }
+            return .init(amount: convert(amountInPriceCurrency, to: currency), currency: currency)
+        }
+    }
+
+    private var prixEquivalents: [CustomerDisplayView.CurrencyEquivalent] {
+        currencyEquivalents(for: calcul.price)
+    }
+
+    private var commissionEquivalents: [CustomerDisplayView.CurrencyEquivalent] {
+        calcul.commissionAmount > 0 ? currencyEquivalents(for: calcul.commissionAmount) : []
+    }
+
+    private var tipEquivalents: [CustomerDisplayView.CurrencyEquivalent] {
+        pourboireMontant > 0 ? currencyEquivalents(for: pourboireMontant) : []
     }
 
     private var ecartPourcent: Double {
@@ -91,70 +147,60 @@ struct ContentView: View {
     }
     private var ecartImportant: Bool { tauxPersonnalise && ecartPourcent > 8 }
 
-    /// `true` quand le téléphone est physiquement retourné vers le client, quelle que soit
-    /// l'orientation d'interface supportée par l'appareil (l'iPhone ne pivote pas son interface
-    /// à l'envers, mais le capteur d'orientation continue de le signaler).
-    private var showCustomerDisplay: Bool { orientation == .portraitUpsideDown }
-
     // MARK: - Corps
 
     var body: some View {
-        ZStack {
-            ScrollView {
-                VStack(spacing: 24) {
-                    header
-                    ResultBoard(
-                        isInsufficient: calcul.isInsufficient,
-                        mainAmount: mainAmount,
-                        mainCurrency: payoutCurrency,
-                        breakdown: breakdown,
-                        secondaryAmount: secondaryAmount,
-                        secondaryCurrency: secondaryCurrency,
-                        missingAmount: calcul.missingInPriceCurrency,
-                        priceCurrency: currB,
-                        tipAmount: pourboireMontant,
-                        tipPercent: pourboirePourcent
-                    )
-                    formCard
-                    saveCard
-                }
-                .padding(.horizontal, 16)
-                .padding(.top, 24)
-                .padding(.bottom, 48)
-                .frame(maxWidth: 520)
-                .frame(maxWidth: .infinity)
-            }
-            .scrollDismissesKeyboard(.interactively)
-            .background(Color.paperBG.ignoresSafeArea())
-            .refreshable {
-                await store.refresh()
-                if !tauxPersonnalise { syncRate() }
-            }
-
-            if showCustomerDisplay {
-                CustomerDisplayView(
-                    priceAmount: calcul.price,
-                    priceCurrency: currB,
+        ScrollView {
+            VStack(spacing: 24) {
+                header
+                ResultBoard(
                     isInsufficient: calcul.isInsufficient,
+                    mainAmount: mainAmount,
+                    mainCurrency: payoutCurrency,
+                    breakdown: breakdown,
+                    secondaryAmount: secondaryAmount,
+                    secondaryCurrency: secondaryCurrency,
                     missingAmount: calcul.missingInPriceCurrency,
-                    receivedAmount: Fmt.number(recu),
-                    receivedCurrency: currA,
-                    changeAmount: mainAmount,
-                    changeCurrency: payoutCurrency,
-                    changeSecondaryAmount: secondaryAmount,
-                    changeSecondaryCurrency: secondaryCurrency,
-                    commissionAmount: calcul.commissionAmount,
-                    commissionPercent: calcul.commissionPercent,
+                    priceCurrency: currB,
                     tipAmount: pourboireMontant,
                     tipPercent: pourboirePourcent
                 )
-                .rotationEffect(.degrees(180))
-                .ignoresSafeArea()
-                .transition(.opacity)
+                formCard
+                saveCard
             }
+            .padding(.horizontal, 16)
+            .padding(.top, 24)
+            .padding(.bottom, 48)
+            .frame(maxWidth: 520)
+            .frame(maxWidth: .infinity)
         }
-        .animation(.easeInOut(duration: 0.25), value: showCustomerDisplay)
+        .scrollDismissesKeyboard(.interactively)
+        .background(Color.paperBG.ignoresSafeArea())
+        .refreshable {
+            await store.refresh()
+            if !tauxPersonnalise { syncRate() }
+        }
+        .modifier(CustomerDisplayOverlay(
+            priceAmount: calcul.price,
+            priceCurrency: currB,
+            priceEquivalents: prixEquivalents,
+            isInsufficient: calcul.isInsufficient,
+            missingAmount: calcul.missingInPriceCurrency,
+            receivedAmount: Fmt.number(recu),
+            receivedCurrency: currA,
+            changeAmount: mainAmount,
+            changeCurrency: payoutCurrency,
+            changeSecondaryAmount: secondaryAmount,
+            changeSecondaryCurrency: secondaryCurrency,
+            commissionAmount: calcul.commissionAmount,
+            commissionPercent: calcul.commissionPercent,
+            commissionEquivalents: commissionEquivalents,
+            tipAmount: pourboireMontant,
+            tipPercent: pourboirePourcent,
+            tipEquivalents: tipEquivalents
+        ))
         .task {
+            migrateRenderTargetIfNeeded()
             syncRate()
             await store.refresh()
             if !tauxPersonnalise { syncRate() }
@@ -162,25 +208,36 @@ struct ContentView: View {
         .onChange(of: deviseA) { syncRate() }
         .onChange(of: deviseB) { syncRate() }
         .sheet(isPresented: $showHistory) {
-            PurchaseHistoryView(journal: journal, rateStore: store, locationService: locationService)
+            PurchaseHistoryView(
+                journal: journal, rateStore: store, locationService: locationService,
+                initialFilter: modeTransaction
+            )
         }
         .sheet(isPresented: $showAbout) {
             AboutView()
+        }
+        .fullScreenCover(isPresented: $showAccessibleEntry) {
+            AccessibleEntryView(
+                deviseA: $deviseA, deviseB: $deviseB, prix: $prix,
+                commissionTexte: $commissionTexte, pourboireTexte: $pourboireTexte,
+                pourboireEnPourcent: $pourboireEnPourcent, recu: $recu,
+                currA: currA, currB: currB,
+                suggestionReglement: suggestionReglement,
+                pourboireMontant: pourboireMontant, pourboirePourcent: pourboirePourcent,
+                isInsufficient: calcul.isInsufficient, mainAmount: mainAmount, payoutCurrency: payoutCurrency,
+                breakdown: breakdown, secondaryAmount: secondaryAmount, secondaryCurrency: secondaryCurrency,
+                missingAmount: calcul.missingInPriceCurrency,
+                priceAmount: calcul.price, priceEquivalents: prixEquivalents,
+                commissionAmount: calcul.commissionAmount, commissionPercent: calcul.commissionPercent,
+                commissionEquivalents: commissionEquivalents, tipEquivalents: tipEquivalents,
+                swapCurrencies: swapCurrencies
+            )
         }
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
                 Button("OK") { champActif = nil }
             }
-        }
-        .onAppear { UIDevice.current.beginGeneratingDeviceOrientationNotifications() }
-        .onDisappear { UIDevice.current.endGeneratingDeviceOrientationNotifications() }
-        .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-            let current = UIDevice.current.orientation
-            // Le capteur signale aussi .faceUp/.faceDown/.unknown en cours de mouvement :
-            // on les ignore pour ne garder que les quatre orientations stables.
-            guard current.isValidInterfaceOrientation else { return }
-            orientation = current
         }
     }
 
@@ -191,6 +248,7 @@ struct ContentView: View {
             // taille de texte choisie par l'utilisateur.
             HStack(spacing: 10) {
                 aboutButton
+                accessibleEntryButton
                 Spacer()
                 resetButton
                 historyButton
@@ -226,6 +284,20 @@ struct ContentView: View {
         .accessibilityLabel("À propos")
     }
 
+    /// Ouvre l'écran de saisie en gros caractères, pensé pour les utilisateurs
+    /// malvoyants : mêmes informations, texte et cibles tactiles nettement plus grands.
+    private var accessibleEntryButton: some View {
+        Button { showAccessibleEntry = true } label: {
+            Image(systemName: "textformat.size")
+                .scaledFont(15, weight: .medium)
+                .foregroundStyle(Color.accentGreen)
+                .frame(width: 38, height: 38)
+                .background(Color.cardBG, in: .circle)
+                .overlay(Circle().stroke(Color.cardLine, lineWidth: 1))
+        }
+        .accessibilityLabel("Saisie en gros caractères")
+    }
+
     private var resetButton: some View {
         Button(action: resetForm) {
             Image(systemName: "arrow.counterclockwise.circle")
@@ -258,13 +330,14 @@ struct ContentView: View {
                 }
             }
         }
-        .accessibilityLabel(Text("Historique des achats, \(journal.entries.count) enregistrés"))
+        .accessibilityLabel(Text("Historique, \(journal.entries.count) enregistrés"))
     }
 
     // MARK: - Formulaire
 
     private var formCard: some View {
         VStack(alignment: .leading, spacing: 22) {
+            transactionKindPicker
             currencyPickers
             rateRow
             commissionRow
@@ -276,10 +349,45 @@ struct ContentView: View {
         .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color.cardLine, lineWidth: 1))
     }
 
+    /// Distingue si l'utilisateur achète (client face à un vendeur) ou vend et rend la
+    /// monnaie à un client (comptoir, étal, change) : le calcul est le même dans les
+    /// deux cas, seul le classement dans le journal en dépend.
+    private var transactionKindPicker: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            fieldLabel("Type de transaction")
+            HStack(spacing: 8) {
+                ForEach(TransactionKind.allCases) { kind in
+                    kindToggleButton(kind)
+                }
+            }
+        }
+    }
+
+    private func kindToggleButton(_ kind: TransactionKind) -> some View {
+        let active = modeTransaction == kind
+        return Button { modeTransaction = kind } label: {
+            HStack(spacing: 6) {
+                Image(systemName: kind.icon)
+                Text(kind.label)
+            }
+            .scaledFont(13, weight: .medium)
+            .foregroundStyle(active ? Color.white : Color.secondary)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
+            .background(active ? Color.accentGreen : Color.paperBG, in: .rect(cornerRadius: 8))
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(active ? Color.accentGreen : Color.cardLine, lineWidth: 1)
+            )
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(active ? [.isSelected] : [])
+    }
+
     private var saveCard: some View {
         VStack(alignment: .leading, spacing: 12) {
             fieldLabel("Libellé (optionnel)")
-            TextField("Ex. café, souvenir, taxi…", text: $achatNote)
+            TextField("Ex. café, souvenir, taxi…", text: $noteTransaction)
                 .scaledFont(14)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 10)
@@ -288,8 +396,8 @@ struct ContentView: View {
 
             Button(action: savePurchase) {
                 HStack {
-                    Image(systemName: achatEnregistre ? "checkmark.circle.fill" : "tray.and.arrow.down")
-                    Text(achatEnregistre ? "Achat enregistré" : "Enregistrer cet achat")
+                    Image(systemName: transactionEnregistree ? "checkmark.circle.fill" : "tray.and.arrow.down")
+                    Text(transactionEnregistree ? modeTransaction.savedLabel : modeTransaction.saveActionLabel)
                 }
                 .scaledFont(14, weight: .semibold)
                 .foregroundStyle(.white)
@@ -300,7 +408,7 @@ struct ContentView: View {
             .buttonStyle(.plain)
             .disabled(!canSave)
 
-            Text("Cumule tes achats ici pour retrouver un bilan complet en fin de voyage.")
+            Text(modeTransaction.saveCaption)
                 .scaledFont(11)
                 .foregroundStyle(.secondary)
         }
@@ -345,6 +453,7 @@ struct ContentView: View {
                         .scaledFont(16, weight: .semibold)
                         .foregroundStyle(.primary)
                         .lineLimit(1)
+                        .minimumScaleFactor(0.6)
                     Spacer(minLength: 4)
                     Image(systemName: "chevron.up.chevron.down")
                         .scaledFont(12, weight: .semibold)
@@ -375,7 +484,7 @@ struct ContentView: View {
 
                 TextField("", text: $tauxTexte)
                     .scaledFont(13, design: .monospaced)
-                    .keyboardType(.decimalPad)
+                    .keyboardType(.numericEntry)
                     .focused($champActif, equals: .taux)
                     .disabled(!tauxPersonnalise)
                     .foregroundStyle(tauxPersonnalise ? Color.primary : Color.secondary)
@@ -437,7 +546,7 @@ struct ContentView: View {
             Spacer()
             TextField("0", text: $commissionTexte)
                 .scaledFont(13, design: .monospaced)
-                .keyboardType(.decimalPad)
+                .keyboardType(.numericEntry)
                 .multilineTextAlignment(.trailing)
                 .focused($champActif, equals: .commission)
                 .frame(width: 64)
@@ -484,6 +593,11 @@ struct ContentView: View {
                         .scaledFont(11)
                         .foregroundStyle(.secondary)
                 }
+                if let detail = prixDetailLabel {
+                    Text(detail)
+                        .scaledFont(11)
+                        .foregroundStyle(.secondary)
+                }
             }
             pourboireRow
             VStack(alignment: .leading, spacing: 6) {
@@ -493,10 +607,49 @@ struct ContentView: View {
             if let suggestion = suggestionReglement {
                 suggestionRow(suggestion)
             }
-            Text(recuLabel)
-                .scaledFont(12)
+            receivedBreakdown
+        }
+    }
+
+    /// Décompose la valeur du montant reçu quand une commission s'applique : la valeur
+    /// réelle au taux plein, puis la part retenue par le comptoir, puis ce qui est
+    /// effectivement crédité sur le prix. Sans ce détail, afficher directement le
+    /// montant crédité laisserait croire que c'est la valeur réelle de ce qui a été
+    /// remis — alors qu'il est déjà amputé de la commission.
+    private var receivedBreakdown: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            if commission > 0 {
+                Text(receivedRawLabel)
+                    .scaledFont(12)
+                    .foregroundStyle(.secondary)
+                Text(receivedCommissionLabel)
+                    .scaledFont(12)
+                    .foregroundStyle(Color.accentGold)
+            }
+            Text(receivedCreditedLabel)
+                .scaledFont(12, weight: commission > 0 ? .semibold : .regular)
                 .foregroundStyle(.secondary)
         }
+    }
+
+    /// Valeur réelle (au taux plein, avant commission) de ce que le client a remis.
+    private var receivedRawLabel: LocalizedStringKey {
+        let recuTexte = Fmt.amount(calcul.received, currency: currA)
+        let brut = Fmt.amount(calcul.received * calcul.rate, currency: currB)
+        return "\(recuTexte) \(deviseA) ≈ \(brut) \(deviseB) au taux appliqué"
+    }
+
+    private var receivedCommissionLabel: LocalizedStringKey {
+        let montant = Fmt.amount(calcul.commissionAmount, currency: currB)
+        return "− commission de \(Fmt.rate(commission))% = \(montant) \(deviseB) retenus par le comptoir"
+    }
+
+    private var receivedCreditedLabel: LocalizedStringKey {
+        let montant = Fmt.amount(calcul.receivedConverted, currency: currB)
+        if commission > 0 {
+            return "= \(montant) \(deviseB) crédités sur le prix"
+        }
+        return "Le montant reçu représente \(montant) \(deviseB)."
     }
 
     private var pourboireRow: some View {
@@ -520,7 +673,7 @@ struct ContentView: View {
 
                 TextField("0", text: $pourboireTexte)
                     .scaledFont(13, design: .monospaced)
-                    .keyboardType(.decimalPad)
+                    .keyboardType(.numericEntry)
                     .multilineTextAlignment(.trailing)
                     .focused($champActif, equals: .pourboire)
                     .frame(width: 64)
@@ -545,6 +698,16 @@ struct ContentView: View {
         let value = prixSaisi * store.rate(from: deviseB, to: "EUR")
         guard value > 0 else { return nil }
         return "≈ \(Fmt.amount(value, currency: CurrencyCatalog.currency("EUR"))) €"
+    }
+
+    /// Décompose le total dû (prix + pourboire) — uniquement utile quand un pourboire
+    /// est renseigné, sinon le champ « Prix à payer » suffit déjà à lui seul.
+    private var prixDetailLabel: LocalizedStringKey? {
+        guard pourboireMontant > 0 else { return nil }
+        let prixTexte = Fmt.amount(prixSaisi, currency: currB)
+        let pourboireTexte = Fmt.amount(pourboireMontant, currency: currB)
+        let totalTexte = Fmt.amount(calcul.price, currency: currB)
+        return "Prix \(prixTexte) + pourboire \(pourboireTexte) = \(totalTexte) \(deviseB)"
     }
 
     private var pourboireEquivalent: LocalizedStringKey? {
@@ -582,22 +745,52 @@ struct ContentView: View {
         return "Proposer \(rounded) \(deviseA) (billet entier existant : \(Fmt.amount(bill, currency: currA)) \(deviseA))."
     }
 
-    private var recuLabel: LocalizedStringKey {
-        let montant = Fmt.amount(calcul.receivedConverted, currency: currB)
-        if commission > 0 {
-            return "Le montant reçu représente \(montant) \(deviseB). (commission \(Fmt.rate(commission))% incluse)"
-        }
-        return "Le montant reçu représente \(montant) \(deviseB)."
-    }
+    /// `true` quand la devise de rendu choisie n'est ni la devise payée ni celle du prix.
+    private var rendreEnAutreDevise: Bool { deviseRendue != deviseA && deviseRendue != deviseB }
 
     private var renderTargetPicker: some View {
         VStack(alignment: .leading, spacing: 8) {
             fieldLabel("Rendre la monnaie en")
             HStack(spacing: 8) {
-                toggleButton(code: deviseA, active: !rendreEnB) { rendreEnB = false }
-                toggleButton(code: deviseB, active: rendreEnB) { rendreEnB = true }
+                toggleButton(code: deviseA, active: deviseRendue == deviseA) { deviseRendue = deviseA }
+                toggleButton(code: deviseB, active: deviseRendue == deviseB) { deviseRendue = deviseB }
             }
+            otherRenderTargetPicker
         }
+    }
+
+    /// Ouvre le catalogue complet des devises pour rendre la monnaie dans n'importe
+    /// laquelle, au-delà des deux devises de la transaction.
+    private var otherRenderTargetPicker: some View {
+        Menu {
+            Picker("Rendre la monnaie en", selection: $deviseRendue) {
+                ForEach(CurrencyCatalog.all) { c in
+                    Text(c.label).tag(c.code)
+                }
+            }
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: "ellipsis.circle")
+                    .scaledFont(13, weight: .medium)
+                Text(rendreEnAutreDevise ? "\(payoutCurrency.flag) \(payoutCurrency.code)" : String(localized: "Autre devise…"))
+                    .scaledFont(13, weight: .medium)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
+                Spacer(minLength: 4)
+                Image(systemName: "chevron.up.chevron.down")
+                    .scaledFont(11, weight: .semibold)
+            }
+            .foregroundStyle(rendreEnAutreDevise ? Color.white : Color.secondary)
+            .padding(.horizontal, 12)
+            .frame(minHeight: 44)
+            .frame(maxWidth: .infinity)
+            .background(rendreEnAutreDevise ? Color.accentGreen : Color.paperBG, in: .rect(cornerRadius: 8))
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(rendreEnAutreDevise ? Color.accentGreen : Color.cardLine, lineWidth: 1)
+            )
+        }
+        .accessibilityAddTraits(rendreEnAutreDevise ? [.isSelected] : [])
     }
 
     // MARK: - Composants
@@ -613,7 +806,7 @@ struct ContentView: View {
     private func textField(_ binding: Binding<String>, focus: Champ) -> some View {
         TextField("", text: binding)
             .scaledFont(15, design: .monospaced)
-            .keyboardType(.decimalPad)
+            .keyboardType(.numericEntry)
             .focused($champActif, equals: focus)
             .padding(.horizontal, 12)
             .padding(.vertical, 12)
@@ -625,6 +818,8 @@ struct ContentView: View {
         Button(action: action) {
             Text("\(CurrencyCatalog.currency(code).flag) \(code)")
                 .scaledFont(13, weight: .medium)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
                 .foregroundStyle(active ? Color.white : Color.secondary)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
@@ -640,15 +835,28 @@ struct ContentView: View {
 
     // MARK: - Actions
 
+    /// Les versions antérieures à l'ajout du rendu en devise libre stockaient un simple
+    /// bool (rendre en A ou B). On le convertit une seule fois vers le nouveau stockage
+    /// par code de devise, pour ne pas changer le comportement des utilisateurs
+    /// existants au premier lancement après la mise à jour.
+    private func migrateRenderTargetIfNeeded() {
+        let defaults = UserDefaults.standard
+        guard defaults.object(forKey: "deviseRendue") == nil,
+              defaults.object(forKey: "rendreEnB") != nil
+        else { return }
+        deviseRendue = defaults.bool(forKey: "rendreEnB") ? deviseB : deviseA
+    }
+
     /// Réaligne le champ de taux sur le cours de référence et reverrouille la saisie.
     private func syncRate() {
         tauxTexte = Fmt.rate(store.rate(from: deviseA, to: deviseB))
         tauxPersonnalise = false
     }
 
+    /// Inverse les devises payée et du prix. `deviseRendue` n'a pas besoin d'être
+    /// ajustée : elle référence un code de devise absolu, pas un rôle relatif (A/B).
     private func swapCurrencies() {
         swap(&deviseA, &deviseB)
-        rendreEnB.toggle()
     }
 
     /// Efface la saisie en cours (prix, reçu, pourboire, commission, libellé) pour repartir
@@ -659,23 +867,25 @@ struct ContentView: View {
         recu = ""
         pourboireTexte = ""
         commissionTexte = ""
-        achatNote = ""
+        noteTransaction = ""
         syncRate()
     }
 
-    /// `true` quand le calcul courant représente un achat valide, enregistrable dans le journal.
+    /// `true` quand le calcul courant représente une transaction valide, enregistrable dans le journal.
     private var canSave: Bool {
         !calcul.isInsufficient && prixSaisi > 0 && Fmt.number(recu) > 0
     }
 
-    /// Ajoute l'achat courant au journal de voyage et affiche une confirmation brève.
-    /// Le lieu (si autorisé) est relevé au moment même de la validation.
+    /// Ajoute la transaction courante (achat ou vente, selon le mode choisi) au journal
+    /// de voyage et affiche une confirmation brève. Le lieu (si autorisé) est relevé au
+    /// moment même de la validation.
     private func savePurchase() {
         guard canSave else { return }
 
-        // On fige les valeurs de l'achat avant l'attente de la position, pour ne pas
-        // enregistrer des montants que l'utilisateur aurait modifiés entre-temps.
-        let note = achatNote.trimmingCharacters(in: .whitespacesAndNewlines)
+        // On fige les valeurs de la transaction avant l'attente de la position, pour ne
+        // pas enregistrer des montants que l'utilisateur aurait modifiés entre-temps.
+        let note = noteTransaction.trimmingCharacters(in: .whitespacesAndNewlines)
+        let kind = modeTransaction
         let priceCurrencyCode = deviseB
         let price = prixSaisi
         let tipAmount = pourboireMontant
@@ -687,13 +897,14 @@ struct ContentView: View {
         let commissionPercent = commission
         let commissionAmount = calcul.commissionAmount
 
-        achatNote = ""
-        withAnimation { achatEnregistre = true }
+        noteTransaction = ""
+        withAnimation { transactionEnregistree = true }
 
         Task {
             let location = await locationService.currentLocation()
             journal.add(PurchaseEntry(
                 note: note,
+                kind: kind,
                 priceCurrencyCode: priceCurrencyCode,
                 price: price,
                 tipAmount: tipAmount,
@@ -708,7 +919,7 @@ struct ContentView: View {
                 longitude: location?.coordinate.longitude
             ))
             try? await Task.sleep(for: .seconds(1.6))
-            withAnimation { achatEnregistre = false }
+            withAnimation { transactionEnregistree = false }
         }
     }
 }

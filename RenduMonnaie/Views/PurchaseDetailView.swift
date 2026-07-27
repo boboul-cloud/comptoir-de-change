@@ -33,7 +33,7 @@ struct PurchaseDetailView: View {
                 .padding(16)
             }
             .background(Color.paperBG.ignoresSafeArea())
-            .navigationTitle(entry.note.isEmpty ? String(localized: "Achat") : entry.note)
+            .navigationTitle(entry.note.isEmpty ? entry.kind.label : entry.note)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -51,6 +51,14 @@ struct PurchaseDetailView: View {
         let changeCurrency = CurrencyCatalog.currency(entry.changeCurrencyCode)
 
         return VStack(spacing: 14) {
+            Text(entry.kind.label)
+                .scaledFont(10, weight: .bold, design: .monospaced)
+                .tracking(2)
+                .foregroundStyle(Color.accentGreen)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 4)
+                .background(Color.accentGreen.opacity(0.15), in: .capsule)
+
             Text(Fmt.time(entry.date))
                 .scaledFont(11, design: .monospaced)
                 .tracking(1.5)
@@ -98,14 +106,14 @@ struct PurchaseDetailView: View {
 
     private func mapCard(at coordinate: CLLocationCoordinate2D) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            fieldLabel("Lieu de l'achat")
+            fieldLabel(entry.kind.locationLabel)
             Map(initialPosition: .region(
                 MKCoordinateRegion(
                     center: coordinate,
                     span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
                 )
             )) {
-                Marker(entry.note.isEmpty ? String(localized: "Achat") : entry.note, coordinate: coordinate)
+                Marker(entry.note.isEmpty ? entry.kind.label : entry.note, coordinate: coordinate)
                     .tint(Color.accentGreen)
             }
             .frame(height: 260)
@@ -121,7 +129,7 @@ struct PurchaseDetailView: View {
                 .foregroundStyle(.secondary)
             Text("Lieu non disponible")
                 .scaledFont(14, weight: .semibold)
-            Text("La position n'a pas pu être relevée lors de l'enregistrement de cet achat.")
+            Text(entry.kind.locationUnavailableMessage)
                 .scaledFont(12)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -135,6 +143,16 @@ struct PurchaseDetailView: View {
 
     private func fieldLabel(_ key: LocalizedStringKey) -> some View {
         Text(key)
+            .scaledFont(11, weight: .semibold)
+            .tracking(0.8)
+            .textCase(.uppercase)
+            .foregroundStyle(.secondary)
+    }
+
+    /// Variante pour un libellé déjà résolu (ex. dépendant du type de transaction),
+    /// affiché tel quel plutôt que relocalisé via le catalogue de chaînes.
+    private func fieldLabel(_ text: String) -> some View {
+        Text(text)
             .scaledFont(11, weight: .semibold)
             .tracking(0.8)
             .textCase(.uppercase)

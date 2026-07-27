@@ -18,10 +18,15 @@ struct PurchaseReportView: View {
         var id: UUID { entry.id }
     }
 
-    /// Achats triés chronologiquement, du plus ancien au plus récent.
+    /// Type des transactions du rapport : toutes les lignes partagent le même type,
+    /// achats et ventes étant exportés séparément.
+    let kind: TransactionKind
+    /// Transactions triées chronologiquement, du plus ancien au plus récent.
     let rows: [Row]
     let summary: JournalSummary
-    let totalInEUR: Double
+    /// Devise choisie pour le total du bilan (l'euro par défaut, mais personnalisable).
+    let totalCurrencyCode: String
+    let total: Double
     let generatedAt: Date
 
     private let pageWidth: CGFloat = 595   // largeur A4, en points
@@ -53,7 +58,7 @@ struct PurchaseReportView: View {
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("BILAN DE VOYAGE")
+            Text(kind.summaryTitle)
                 .font(.system(size: 13, weight: .bold, design: .monospaced))
                 .tracking(2.5)
                 .foregroundStyle(Color.accentGreen)
@@ -70,11 +75,11 @@ struct PurchaseReportView: View {
 
     private var summarySection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("TOTAL EN EUROS")
+            Text(totalHeaderLabel)
                 .font(.system(size: 10, weight: .semibold, design: .monospaced))
                 .tracking(2)
                 .foregroundStyle(Color.black.opacity(0.5))
-            Text("≈ \(Fmt.amount(totalInEUR, currency: CurrencyCatalog.currency("EUR"))) €")
+            Text(totalAmountText)
                 .font(.system(size: 30, weight: .bold, design: .monospaced))
             Text(countLabel)
                 .font(.system(size: 12))
@@ -89,18 +94,10 @@ struct PurchaseReportView: View {
         }
     }
 
-    private var countLabel: String {
-        summary.count == 1
-            ? String(localized: "1 achat enregistré")
-            : String(localized: "\(summary.count) achats enregistrés")
-    }
-
-    /// Même formulation que le détail des totaux dans l'historique (clés de
-    /// catalogue partagées, pour éviter tout doublon de symbole généré).
-    private func countLabel(for count: Int) -> String {
-        count == 1
-            ? String(localized: "1 achat")
-            : String(localized: "\(count) achats")
+    private var countLabel: String { kind.countRegistered(summary.count) }
+    private var totalHeaderLabel: LocalizedStringKey { "TOTAL EN \(totalCurrencyCode)" }
+    private var totalAmountText: String {
+        "≈ " + Fmt.amount(total, currency: CurrencyCatalog.currency(totalCurrencyCode)) + " " + totalCurrencyCode
     }
 
     private func totalRow(_ total: JournalSummary.CurrencyTotal) -> some View {
@@ -111,7 +108,7 @@ struct PurchaseReportView: View {
             Spacer()
             Text("\(Fmt.amount(total.totalPrice + total.totalTip, currency: currency)) \(total.code)")
                 .font(.system(size: 13, weight: .bold, design: .monospaced))
-            Text(verbatim: "(\(countLabel(for: total.count)))")
+            Text(verbatim: "(\(kind.count(total.count)))")
                 .font(.system(size: 11))
                 .foregroundStyle(Color.black.opacity(0.45))
         }
@@ -121,7 +118,7 @@ struct PurchaseReportView: View {
 
     private var detailSection: some View {
         VStack(alignment: .leading, spacing: 18) {
-            Text("DÉTAIL DES ACHATS")
+            Text(kind.detailSectionTitle)
                 .font(.system(size: 12, weight: .bold, design: .monospaced))
                 .tracking(1.5)
                 .foregroundStyle(Color.black.opacity(0.5))
@@ -149,7 +146,7 @@ struct PurchaseReportView: View {
         let changeCurrency = CurrencyCatalog.currency(entry.changeCurrencyCode)
         return VStack(alignment: .leading, spacing: 3) {
             HStack(alignment: .firstTextBaseline) {
-                Text(entry.note.isEmpty ? String(localized: "Achat") : entry.note)
+                Text(entry.note.isEmpty ? entry.kind.label : entry.note)
                     .font(.system(size: 13, weight: .semibold))
                 Spacer()
                 Text("\(Fmt.amount(entry.totalPrice, currency: priceCurrency)) \(entry.priceCurrencyCode)")
@@ -171,6 +168,7 @@ struct PurchaseReportView: View {
 
 #Preview {
     PurchaseReportView(
+        kind: .achat,
         rows: [
             .init(
                 entry: PurchaseEntry(
@@ -191,7 +189,8 @@ struct PurchaseReportView: View {
                 rate: 0.9
             ),
         ].summary,
-        totalInEUR: 4.5,
+        totalCurrencyCode: "EUR",
+        total: 4.5,
         generatedAt: Date()
     )
 }

@@ -7,10 +7,24 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct CustomerDisplayView: View {
+
+    /// Contre-valeur d'un montant dans une autre devise que celle où il est affiché
+    /// en premier lieu (ex. le prix, aussi exprimé dans la devise du reçu et du rendu).
+    struct CurrencyEquivalent: Identifiable {
+        let amount: Double
+        let currency: Currency
+        var id: String { currency.code }
+    }
+
     let priceAmount: Double
     let priceCurrency: Currency
+    /// Contre-valeurs du prix dans la devise du reçu et celle du rendu, quand elles
+    /// diffèrent de la devise du prix (et entre elles) — transparence totale pour le
+    /// client, qui ne connaît pas forcément la devise du prix.
+    var priceEquivalents: [CurrencyEquivalent] = []
 
     let isInsufficient: Bool
     let missingAmount: Double
@@ -25,12 +39,21 @@ struct CustomerDisplayView: View {
 
     let commissionAmount: Double
     let commissionPercent: Double
+    /// Contre-valeurs de la commission dans la devise du reçu et celle du rendu, mêmes
+    /// règles que `priceEquivalents`.
+    var commissionEquivalents: [CurrencyEquivalent] = []
     let tipAmount: Double
     let tipPercent: Double
+    /// Contre-valeurs du pourboire dans la devise du reçu et celle du rendu, mêmes
+    /// règles que `priceEquivalents`.
+    var tipEquivalents: [CurrencyEquivalent] = []
 
     var body: some View {
         VStack(spacing: 28) {
-            row(label: "PRIX", value: Fmt.amount(priceAmount, currency: priceCurrency), code: priceCurrency.code)
+            row(
+                label: "PRIX", value: Fmt.amount(priceAmount, currency: priceCurrency), code: priceCurrency.code,
+                equivalents: priceEquivalents
+            )
 
             Divider().overlay(.white.opacity(0.15))
 
@@ -53,10 +76,16 @@ struct CustomerDisplayView: View {
                 Divider().overlay(.white.opacity(0.1))
                 HStack(spacing: 32) {
                     if commissionAmount > 0 {
-                        detailRow(label: "COMMISSION", amount: commissionAmount, currency: priceCurrency, percent: commissionPercent)
+                        detailRow(
+                            label: "COMMISSION", amount: commissionAmount, currency: priceCurrency,
+                            percent: commissionPercent, equivalents: commissionEquivalents
+                        )
                     }
                     if tipAmount > 0 {
-                        detailRow(label: "POURBOIRE", amount: tipAmount, currency: priceCurrency, percent: tipPercent)
+                        detailRow(
+                            label: "POURBOIRE", amount: tipAmount, currency: priceCurrency,
+                            percent: tipPercent, equivalents: tipEquivalents
+                        )
                     }
                 }
             }
@@ -67,7 +96,10 @@ struct CustomerDisplayView: View {
         .accessibilityElement(children: .combine)
     }
 
-    private func row(label: LocalizedStringKey, value: String, code: String, accent: Color = .cream) -> some View {
+    private func row(
+        label: LocalizedStringKey, value: String, code: String, accent: Color = .cream,
+        equivalents: [CurrencyEquivalent] = []
+    ) -> some View {
         VStack(spacing: 6) {
             Text(label)
                 .scaledFont(13, design: .monospaced)
@@ -83,10 +115,18 @@ struct CustomerDisplayView: View {
                     .scaledFont(16, design: .monospaced)
                     .foregroundStyle(Color.accentGold)
             }
+            ForEach(equivalents) { equivalent in
+                Text("soit \(Fmt.amount(equivalent.amount, currency: equivalent.currency)) \(equivalent.currency.code)")
+                    .scaledFont(15, design: .monospaced)
+                    .foregroundStyle(.white.opacity(0.6))
+            }
         }
     }
 
-    private func detailRow(label: LocalizedStringKey, amount: Double, currency: Currency, percent: Double) -> some View {
+    private func detailRow(
+        label: LocalizedStringKey, amount: Double, currency: Currency, percent: Double,
+        equivalents: [CurrencyEquivalent] = []
+    ) -> some View {
         VStack(spacing: 4) {
             Text(label)
                 .scaledFont(11, design: .monospaced)
@@ -100,6 +140,95 @@ struct CustomerDisplayView: View {
                     .scaledFont(12, design: .monospaced)
                     .foregroundStyle(.white.opacity(0.5))
             }
+            ForEach(equivalents) { equivalent in
+                Text("soit \(Fmt.amount(equivalent.amount, currency: equivalent.currency)) \(equivalent.currency.code)")
+                    .scaledFont(11, design: .monospaced)
+                    .foregroundStyle(.white.opacity(0.5))
+            }
+        }
+    }
+}
+
+/// Superpose l'« écran inversé » (`CustomerDisplayView`) dès que l'appareil est
+/// physiquement retourné vers le client, quel que soit l'écran affiché par ailleurs —
+/// écran principal ou saisie en gros caractères. Le calcul en cours est fourni par
+/// l'appelant ; ce modifier ne gère que la détection d'orientation et la rotation.
+struct CustomerDisplayOverlay: ViewModifier {
+    let priceAmount: Double
+    let priceCurrency: Currency
+    var priceEquivalents: [CustomerDisplayView.CurrencyEquivalent] = []
+
+    let isInsufficient: Bool
+    let missingAmount: Double
+
+    let receivedAmount: Double
+    let receivedCurrency: Currency
+
+    let changeAmount: Double
+    let changeCurrency: Currency
+    let changeSecondaryAmount: Double
+    let changeSecondaryCurrency: Currency
+
+    let commissionAmount: Double
+    let commissionPercent: Double
+    var commissionEquivalents: [CustomerDisplayView.CurrencyEquivalent] = []
+    let tipAmount: Double
+    let tipPercent: Double
+    var tipEquivalents: [CustomerDisplayView.CurrencyEquivalent] = []
+
+    @State private var orientation: UIDeviceOrientation = UIDevice.current.orientation
+
+    /// `true` quand le téléphone est physiquement retourné vers le client, quelle que
+    /// soit l'orientation d'interface supportée par l'appareil (l'iPhone ne pivote pas
+    /// son interface à l'envers, mais le capteur d'orientation continue de le signaler).
+    private var showCustomerDisplay: Bool { orientation == .portraitUpsideDown }
+
+    /// Sur iPhone, `UISupportedInterfaceOrientations` exclut le mode tête-en-bas :
+    /// l'interface reste fixe et il faut donc pivoter manuellement l'affichage client
+    /// de 180°. Sur iPad en revanche, `UISupportedInterfaceOrientations_iPad` inclut ce
+    /// mode : iOS pivote déjà nativement toute l'interface quand la tablette est
+    /// retournée. Ajouter une rotation manuelle par-dessus annulerait cette correction
+    /// native (180 + 180 = 360°) et afficherait l'écran client à l'envers.
+    private var needsManualCustomerRotation: Bool { UIDevice.current.userInterfaceIdiom != .pad }
+
+    func body(content: Content) -> some View {
+        ZStack {
+            content
+
+            if showCustomerDisplay {
+                CustomerDisplayView(
+                    priceAmount: priceAmount,
+                    priceCurrency: priceCurrency,
+                    priceEquivalents: priceEquivalents,
+                    isInsufficient: isInsufficient,
+                    missingAmount: missingAmount,
+                    receivedAmount: receivedAmount,
+                    receivedCurrency: receivedCurrency,
+                    changeAmount: changeAmount,
+                    changeCurrency: changeCurrency,
+                    changeSecondaryAmount: changeSecondaryAmount,
+                    changeSecondaryCurrency: changeSecondaryCurrency,
+                    commissionAmount: commissionAmount,
+                    commissionPercent: commissionPercent,
+                    commissionEquivalents: commissionEquivalents,
+                    tipAmount: tipAmount,
+                    tipPercent: tipPercent,
+                    tipEquivalents: tipEquivalents
+                )
+                .rotationEffect(.degrees(needsManualCustomerRotation ? 180 : 0))
+                .ignoresSafeArea()
+                .transition(.opacity)
+            }
+        }
+        .animation(.easeInOut(duration: 0.25), value: showCustomerDisplay)
+        .onAppear { UIDevice.current.beginGeneratingDeviceOrientationNotifications() }
+        .onDisappear { UIDevice.current.endGeneratingDeviceOrientationNotifications() }
+        .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+            let current = UIDevice.current.orientation
+            // Le capteur signale aussi .faceUp/.faceDown/.unknown en cours de mouvement :
+            // on les ignore pour ne garder que les quatre orientations stables.
+            guard current.isValidInterfaceOrientation else { return }
+            orientation = current
         }
     }
 }
@@ -110,6 +239,7 @@ struct CustomerDisplayView: View {
     return CustomerDisplayView(
         priceAmount: 49.50,
         priceCurrency: eur,
+        priceEquivalents: [.init(amount: 53.80, currency: usd)],
         isInsufficient: false,
         missingAmount: 0,
         receivedAmount: 60,
@@ -120,7 +250,9 @@ struct CustomerDisplayView: View {
         changeSecondaryCurrency: usd,
         commissionAmount: 2.50,
         commissionPercent: 3.0,
+        commissionEquivalents: [.init(amount: 2.72, currency: usd)],
         tipAmount: 4.50,
-        tipPercent: 10.0
+        tipPercent: 10.0,
+        tipEquivalents: [.init(amount: 4.89, currency: usd)]
     )
 }

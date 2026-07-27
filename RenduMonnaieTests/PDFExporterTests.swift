@@ -31,7 +31,7 @@ struct PDFExporterTests {
             ),
         ]
         let rows = entries.map { PurchaseReportView.Row(entry: $0, placeName: $0.hasLocation ? "Paris, France" : nil) }
-        let report = PurchaseReportView(rows: rows, summary: entries.summary, totalInEUR: 18.2, generatedAt: Date())
+        let report = PurchaseReportView(kind: .achat, rows: rows, summary: entries.summary, totalCurrencyCode: "EUR", total: 18.2, generatedAt: Date())
 
         let url = PDFExporter.export(report, fileName: "test-bilan.pdf")
 
@@ -47,7 +47,7 @@ struct PDFExporterTests {
     }
 
     @Test func exportGereUneListeVide() {
-        let report = PurchaseReportView(rows: [], summary: [].summary, totalInEUR: 0, generatedAt: Date())
+        let report = PurchaseReportView(kind: .achat, rows: [], summary: [].summary, totalCurrencyCode: "EUR", total: 0, generatedAt: Date())
         let url = PDFExporter.export(report, fileName: "test-bilan-vide.pdf")
 
         #expect(url != nil)

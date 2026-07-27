@@ -68,3 +68,18 @@ extension View {
         modifier(ScaledFont(size: size, relativeTo: relativeTo, weight: weight, design: design))
     }
 }
+
+#if canImport(UIKit)
+extension UIKeyboardType {
+    /// Sur iPad, `.decimalPad` s'affiche toujours en petit panneau flottant qui peut
+    /// recouvrir le champ de saisie — c'est le seul type de clavier iPad qui n'a pas de
+    /// disposition ancrée pleine largeur, quel que soit le réglage clavier de
+    /// l'utilisateur. `.numbersAndPunctuation` a cette disposition ancrée et couvre les
+    /// mêmes besoins (chiffres, virgule, point) ; on ne le réserve pas à l'iPhone, où
+    /// `.decimalPad` s'affiche déjà ancré en pleine largeur.
+    @MainActor
+    static var numericEntry: UIKeyboardType {
+        UIDevice.current.userInterfaceIdiom == .pad ? .numbersAndPunctuation : .decimalPad
+    }
+}
+#endif

@@ -2,7 +2,8 @@
 //  PurchaseHistoryView.swift
 //  Comptoir de change
 //
-//  Journal des achats enregistrés et bilan financier de fin de voyage.
+//  Journal des achats et des ventes enregistrés, et bilan financier de fin de
+//  voyage — les deux types de transaction sont comptabilisés et affichés séparément.
 //
 
 import SwiftUI
@@ -13,17 +14,33 @@ struct PurchaseHistoryView: View {
     let locationService: LocationService
 
     @Environment(\.dismiss) private var dismiss
+    @State private var filter: TransactionKind
     @State private var confirmingClear = false
     @State private var selectedEntry: PurchaseEntry?
     @State private var isPreparingReport = false
     @State private var reportURL: URL?
     @State private var showReportShareSheet = false
+    /// Devise dans laquelle le total du bilan est exprimé — l'euro par défaut, mais
+    /// librement modifiable (utile pour un voyage dont la devise de référence n'est
+    /// pas l'euro).
+    @AppStorage("deviseBilan") private var deviseBilan = "EUR"
 
-    private var summary: JournalSummary { journal.summary }
+    init(
+        journal: PurchaseJournal, rateStore: RateStore, locationService: LocationService,
+        initialFilter: TransactionKind = .achat
+    ) {
+        self.journal = journal
+        self.rateStore = rateStore
+        self.locationService = locationService
+        _filter = State(initialValue: initialFilter)
+    }
+
+    private var filteredEntries: [PurchaseEntry] { journal.entries.filter { $0.kind == filter } }
+    private var summary: JournalSummary { filteredEntries.summary }
 
     private var groupedEntries: [(day: Date, entries: [PurchaseEntry])] {
         let calendar = Calendar.autoupdatingCurrent
-        let groups = Dictionary(grouping: journal.entries) { calendar.startOfDay(for: $0.date) }
+        let groups = Dictionary(grouping: filteredEntries) { calendar.startOfDay(for: $0.date) }
         return groups.keys.sorted(by: >).map { day in
             (day, groups[day]!.sorted { $0.date > $1.date })
         }
@@ -36,9 +53,14 @@ struct PurchaseHistoryView: View {
                     if journal.entries.isEmpty {
                         emptyState
                     } else {
-                        summaryCard
-                        ForEach(groupedEntries, id: \.day) { group in
-                            dayGroup(group)
+                        kindFilterPicker
+                        if filteredEntries.isEmpty {
+                            emptyState
+                        } else {
+                            summaryCard
+                            ForEach(groupedEntries, id: \.day) { group in
+                                dayGroup(group)
+                            }
                         }
                     }
                 }
@@ -48,7 +70,7 @@ struct PurchaseHistoryView: View {
                 .frame(maxWidth: .infinity)
             }
             .background(Color.paperBG.ignoresSafeArea())
-            .navigationTitle("Historique des achats")
+            .navigationTitle(filter.historyTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -65,6 +87,7 @@ struct PurchaseHistoryView: View {
                                 } label: {
                                     Label("Exporter le bilan en PDF", systemImage: "square.and.arrow.up")
                                 }
+                                .disabled(filteredEntries.isEmpty)
                                 Button(role: .destructive) {
                                     confirmingClear = true
                                 } label: {
@@ -86,7 +109,7 @@ struct PurchaseHistoryView: View {
                 Button("Supprimer", role: .destructive) { journal.clear() }
                 Button("Annuler", role: .cancel) {}
             } message: {
-                Text("Cette action supprimera définitivement les achats enregistrés de ce voyage. Elle est irréversible.")
+                Text("Cette action supprimera définitivement tous les achats et ventes enregistrés de ce voyage. Elle est irréversible.")
             }
             .sheet(item: $selectedEntry) { entry in
                 PurchaseDetailView(entry: entry)
@@ -99,11 +122,22 @@ struct PurchaseHistoryView: View {
         }
     }
 
+    // MARK: - Filtre
+
+    private var kindFilterPicker: some View {
+        Picker("Type de transaction", selection: $filter) {
+            ForEach(TransactionKind.allCases) { kind in
+                Text(kind.label).tag(kind)
+            }
+        }
+        .pickerStyle(.segmented)
+    }
+
     // MARK: - Bilan
 
     private var summaryCard: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text("BILAN DU VOYAGE")
+            Text(filter.summaryTitle)
                 .scaledFont(11, weight: .bold, design: .monospaced)
                 .tracking(2.5)
                 .foregroundStyle(.white.opacity(0.55))
@@ -113,11 +147,8 @@ struct PurchaseHistoryView: View {
                 .foregroundStyle(.white.opacity(0.75))
 
             VStack(alignment: .leading, spacing: 2) {
-                Text("TOTAL EN EUROS")
-                    .scaledFont(10, weight: .semibold, design: .monospaced)
-                    .tracking(2)
-                    .foregroundStyle(Color.accentGold)
-                Text("≈ \(Fmt.amount(totalInEUR, currency: CurrencyCatalog.currency("EUR"))) €")
+                totalCurrencyPicker
+                Text(totalAmountText)
                     .scaledFont(34, weight: .bold, design: .monospaced)
                     .foregroundStyle(Color.cream)
                     .minimumScaleFactor(0.6)
@@ -136,16 +167,40 @@ struct PurchaseHistoryView: View {
         .background(Color.boardBG, in: .rect(cornerRadius: 14))
     }
 
-    private var countLabel: String {
-        summary.count == 1
-            ? String(localized: "1 achat enregistré")
-            : String(localized: "\(summary.count) achats enregistrés")
+    private var countLabel: String { filter.countRegistered(summary.count) }
+
+    /// En-tête « TOTAL EN {devise} » : aussi le déclencheur du sélecteur de devise.
+    private var totalCurrencyPicker: some View {
+        Menu {
+            Picker("Devise du bilan", selection: $deviseBilan) {
+                ForEach(CurrencyCatalog.all) { c in
+                    Text(c.label).tag(c.code)
+                }
+            }
+        } label: {
+            HStack(spacing: 4) {
+                Text(totalHeaderLabel)
+                    .scaledFont(10, weight: .semibold, design: .monospaced)
+                    .tracking(2)
+                Image(systemName: "chevron.up.chevron.down")
+                    .scaledFont(8, weight: .bold)
+            }
+            .foregroundStyle(Color.accentGold)
+        }
+        .accessibilityLabel(Text("Devise du bilan") + Text(" : ") + Text(LocalizedStringKey(CurrencyCatalog.currency(deviseBilan).country)))
     }
 
-    /// Somme, en euros au cours actuel, de tous les achats toutes devises confondues.
-    private var totalInEUR: Double {
+    private var totalHeaderLabel: LocalizedStringKey { "TOTAL EN \(deviseBilan)" }
+
+    private var totalAmountText: String {
+        "≈ " + Fmt.amount(totalInDeviseBilan, currency: CurrencyCatalog.currency(deviseBilan)) + " " + deviseBilan
+    }
+
+    /// Somme, dans la devise choisie pour le bilan, des transactions affichées (achats
+    /// ou ventes, selon le filtre courant), toutes devises confondues.
+    private var totalInDeviseBilan: Double {
         summary.totals.reduce(0) { partial, total in
-            let rate = total.code == "EUR" ? 1 : rateStore.rate(from: total.code, to: "EUR")
+            let rate = total.code == deviseBilan ? 1 : rateStore.rate(from: total.code, to: deviseBilan)
             guard rate > 0 else { return partial }
             return partial + (total.totalPrice + total.totalTip) * rate
         }
@@ -171,27 +226,25 @@ struct PurchaseHistoryView: View {
     }
 
     private func detailText(_ total: JournalSummary.CurrencyTotal) -> String {
-        var parts = [
-            total.count == 1 ? String(localized: "1 achat") : String(localized: "\(total.count) achats"),
-        ]
+        var parts = [filter.count(total.count)]
         if total.totalTip > 0 {
             let currency = CurrencyCatalog.currency(total.code)
             parts.append(String(localized: "dont \(Fmt.amount(total.totalTip, currency: currency)) de pourboire"))
         }
-        if let eur = eurEquivalent(total) {
-            parts.append(eur)
+        if let equivalent = equivalentInDeviseBilan(total) {
+            parts.append(equivalent)
         }
         return parts.joined(separator: " · ")
     }
 
-    /// Contre-valeur approximative en euros, au cours actuel — un repère utile
-    /// quand le voyage mélange plusieurs devises.
-    private func eurEquivalent(_ total: JournalSummary.CurrencyTotal) -> String? {
-        guard total.code != "EUR" else { return nil }
-        let rate = rateStore.rate(from: total.code, to: "EUR")
+    /// Contre-valeur approximative dans la devise du bilan, au cours actuel — un repère
+    /// utile quand le voyage mélange plusieurs devises.
+    private func equivalentInDeviseBilan(_ total: JournalSummary.CurrencyTotal) -> String? {
+        guard total.code != deviseBilan else { return nil }
+        let rate = rateStore.rate(from: total.code, to: deviseBilan)
         guard rate > 0 else { return nil }
         let value = (total.totalPrice + total.totalTip) * rate
-        return "≈ " + Fmt.amount(value, currency: CurrencyCatalog.currency("EUR")) + " €"
+        return "≈ " + Fmt.amount(value, currency: CurrencyCatalog.currency(deviseBilan)) + " " + deviseBilan
     }
 
     // MARK: - Journal
@@ -230,7 +283,7 @@ struct PurchaseHistoryView: View {
                 HStack(alignment: .top, spacing: 10) {
                     VStack(alignment: .leading, spacing: 4) {
                         HStack(spacing: 5) {
-                            Text(entry.note.isEmpty ? String(localized: "Achat") : entry.note)
+                            Text(entry.note.isEmpty ? entry.kind.label : entry.note)
                                 .scaledFont(14, weight: .semibold)
                                 .foregroundStyle(.primary)
                                 .lineLimit(1)
@@ -265,7 +318,7 @@ struct PurchaseHistoryView: View {
                     .foregroundStyle(.secondary.opacity(0.5))
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("Supprimer cet achat")
+            .accessibilityLabel(entry.kind.deleteLabel)
         }
         .padding(.vertical, 12)
     }
@@ -279,12 +332,12 @@ struct PurchaseHistoryView: View {
 
     private var emptyState: some View {
         VStack(spacing: 12) {
-            Image(systemName: "bag")
+            Image(systemName: journal.entries.isEmpty ? "bag" : filter.icon)
                 .scaledFont(34)
                 .foregroundStyle(Color.accentGreen)
-            Text("Aucun achat enregistré")
+            Text(filter.emptyStateTitle)
                 .scaledFont(17, weight: .semibold)
-            Text("Enregistre un achat depuis l'écran principal pour construire ton bilan de voyage.")
+            Text(filter.emptyStateMessage)
                 .scaledFont(13)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -295,15 +348,15 @@ struct PurchaseHistoryView: View {
 
     // MARK: - Partage
 
-    /// Reconstitue le lieu de chaque achat (géocodage inverse quand une position a été
-    /// relevée), puis met en page et exporte le bilan détaillé en PDF avant de proposer
-    /// le partage système.
+    /// Reconstitue le lieu de chaque transaction affichée (géocodage inverse quand une
+    /// position a été relevée), puis met en page et exporte le bilan détaillé en PDF
+    /// avant de proposer le partage système.
     private func prepareReport() async {
         isPreparingReport = true
         defer { isPreparingReport = false }
 
         var rows: [PurchaseReportView.Row] = []
-        for entry in journal.entries.sorted(by: { $0.date < $1.date }) {
+        for entry in filteredEntries.sorted(by: { $0.date < $1.date }) {
             var placeName: String?
             if let latitude = entry.latitude, let longitude = entry.longitude {
                 placeName = await locationService.placeName(latitude: latitude, longitude: longitude)
@@ -312,13 +365,15 @@ struct PurchaseHistoryView: View {
         }
 
         let report = PurchaseReportView(
+            kind: filter,
             rows: rows,
             summary: summary,
-            totalInEUR: totalInEUR,
+            totalCurrencyCode: deviseBilan,
+            total: totalInDeviseBilan,
             generatedAt: Date()
         )
 
-        if let url = PDFExporter.export(report, fileName: "Bilan-de-voyage.pdf") {
+        if let url = PDFExporter.export(report, fileName: "Bilan-\(filter.rawValue)s.pdf") {
             reportURL = url
             showReportShareSheet = true
         }

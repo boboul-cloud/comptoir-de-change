@@ -68,6 +68,26 @@ struct ChangeCalculationTests {
         #expect(abs(c.commissionAmount - 10) < 1e-9)
     }
 
+    @Test func changeInPaidCurrencyAvecCommissionUtiliseLeTauxBrut() {
+        // 100 reçus, taux 1, commission 10 % → 45 de monnaie dans la devise du prix,
+        // qui doit redonner 45 (et non 50) une fois reconvertis dans la devise payée :
+        // la commission ne doit être prélevée qu'une fois, pas une seconde fois au
+        // moment de rendre la monnaie dans la devise d'origine.
+        let c = ChangeCalculation(rate: 1, price: 45, received: 100, commissionPercent: 10)
+        #expect(abs(c.changeInPaidCurrency - 45) < 1e-9)
+    }
+
+    @Test func conservationDeLaValeurAvecCommission() {
+        // Prix + monnaie rendue + commission, toutes exprimées dans la devise payée,
+        // doit toujours reconstituer exactement le montant reçu — sans quoi une partie
+        // de la commission serait silencieusement rendue au client sous forme de monnaie.
+        let c = ChangeCalculation(rate: 0.9, price: 45, received: 60, commissionPercent: 10)
+        let prixDevisePayee = c.price / c.rate
+        let commissionDevisePayee = c.commissionAmount / c.rate
+        let total = prixDevisePayee + c.changeInPaidCurrency + commissionDevisePayee
+        #expect(abs(total - c.received) < 1e-9)
+    }
+
     @Test func commissionNulleNeRetientRien() {
         let c = ChangeCalculation(rate: 1.2, price: 10, received: 20)
         #expect(c.commissionAmount == 0)
