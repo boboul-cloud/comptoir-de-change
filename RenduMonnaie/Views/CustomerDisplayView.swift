@@ -69,7 +69,7 @@ struct CustomerDisplayView: View {
                 row(label: "MONNAIE RENDUE", value: Fmt.amount(changeAmount, currency: changeCurrency), code: changeCurrency.code)
                 Text("soit \(Fmt.amount(changeSecondaryAmount, currency: changeSecondaryCurrency)) \(changeSecondaryCurrency.code)")
                     .scaledFont(15, design: .monospaced)
-                    .foregroundStyle(.white.opacity(0.6))
+                    .foregroundStyle(.white)
             }
 
             if commissionAmount > 0 || tipAmount > 0 {
@@ -104,7 +104,7 @@ struct CustomerDisplayView: View {
             Text(label)
                 .scaledFont(13, design: .monospaced)
                 .tracking(2.5)
-                .foregroundStyle(.white.opacity(0.5))
+                .foregroundStyle(.white)
             HStack(alignment: .firstTextBaseline, spacing: 10) {
                 Text(value)
                     .scaledFont(40, weight: .bold, design: .monospaced)
@@ -118,7 +118,7 @@ struct CustomerDisplayView: View {
             ForEach(equivalents) { equivalent in
                 Text("soit \(Fmt.amount(equivalent.amount, currency: equivalent.currency)) \(equivalent.currency.code)")
                     .scaledFont(15, design: .monospaced)
-                    .foregroundStyle(.white.opacity(0.6))
+                    .foregroundStyle(.white)
             }
         }
     }
@@ -131,19 +131,19 @@ struct CustomerDisplayView: View {
             Text(label)
                 .scaledFont(11, design: .monospaced)
                 .tracking(2)
-                .foregroundStyle(.white.opacity(0.45))
+                .foregroundStyle(.white)
             HStack(spacing: 6) {
                 Text("\(Fmt.amount(amount, currency: currency)) \(currency.code)")
                     .scaledFont(15, weight: .semibold, design: .monospaced)
                     .foregroundStyle(Color.accentGold)
                 Text("(\(String(format: "%.1f", percent))%)")
                     .scaledFont(12, design: .monospaced)
-                    .foregroundStyle(.white.opacity(0.5))
+                    .foregroundStyle(.white)
             }
             ForEach(equivalents) { equivalent in
                 Text("soit \(Fmt.amount(equivalent.amount, currency: equivalent.currency)) \(equivalent.currency.code)")
                     .scaledFont(11, design: .monospaced)
-                    .foregroundStyle(.white.opacity(0.5))
+                    .foregroundStyle(.white)
             }
         }
     }

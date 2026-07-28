@@ -22,7 +22,7 @@ struct CashBreakdownView: View {
 
                     Text("×")
                         .scaledFont(13, design: .monospaced)
-                        .foregroundStyle(.white.opacity(0.4))
+                        .foregroundStyle(.white)
 
                     Text("\(Fmt.amount(line.value, currency: currency)) \(currency.code)")
                         .scaledFont(15, weight: .medium, design: .monospaced)
@@ -32,7 +32,7 @@ struct CashBreakdownView: View {
 
                     Text(Fmt.amount(line.total, currency: currency))
                         .scaledFont(13, design: .monospaced)
-                        .foregroundStyle(.white.opacity(0.45))
+                        .foregroundStyle(.white)
                 }
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(Text("\(line.count) fois \(Fmt.amount(line.value, currency: currency)) \(currency.code)"))

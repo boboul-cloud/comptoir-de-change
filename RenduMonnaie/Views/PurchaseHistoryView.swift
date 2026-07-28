@@ -140,11 +140,11 @@ struct PurchaseHistoryView: View {
             Text(filter.summaryTitle)
                 .scaledFont(11, weight: .bold, design: .monospaced)
                 .tracking(2.5)
-                .foregroundStyle(.white.opacity(0.55))
+                .foregroundStyle(.white)
 
             Text(countLabel)
                 .scaledFont(12, design: .monospaced)
-                .foregroundStyle(.white.opacity(0.75))
+                .foregroundStyle(.white)
 
             VStack(alignment: .leading, spacing: 2) {
                 totalCurrencyPicker
@@ -220,7 +220,7 @@ struct PurchaseHistoryView: View {
             }
             Text(detailText(total))
                 .scaledFont(11, design: .monospaced)
-                .foregroundStyle(.white.opacity(0.5))
+                .foregroundStyle(.white)
                 .fixedSize(horizontal: false, vertical: true)
         }
     }

@@ -62,7 +62,7 @@ struct PurchaseDetailView: View {
             Text(Fmt.time(entry.date))
                 .scaledFont(11, design: .monospaced)
                 .tracking(1.5)
-                .foregroundStyle(.white.opacity(0.5))
+                .foregroundStyle(.white)
 
             Text("\(Fmt.amount(entry.totalPrice, currency: priceCurrency)) \(entry.priceCurrencyCode)")
                 .scaledFont(34, weight: .bold, design: .monospaced)
@@ -94,7 +94,7 @@ struct PurchaseDetailView: View {
         HStack {
             Text(label)
                 .scaledFont(12, design: .monospaced)
-                .foregroundStyle(.white.opacity(0.5))
+                .foregroundStyle(.white)
             Spacer()
             Text(value)
                 .scaledFont(13, weight: .semibold, design: .monospaced)

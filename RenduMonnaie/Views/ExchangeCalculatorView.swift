@@ -36,6 +36,10 @@ struct ExchangeCalculatorView: View {
     }
     private var montantConverti: Double { max(calcul.changeInPriceCurrency, 0) }
 
+    /// Commission exprimée dans la devise remise (montant × commission %) —
+    /// le même prélèvement que `calcul.commissionAmount`, juste vu dans l'autre devise.
+    private var commissionEnSource: Double { montant * commission / 100 }
+
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -165,7 +169,7 @@ struct ExchangeCalculatorView: View {
             Text("MONTANT CONVERTI")
                 .scaledFont(13, design: .monospaced)
                 .tracking(2.5)
-                .foregroundStyle(.white.opacity(0.5))
+                .foregroundStyle(.white)
             HStack(alignment: .firstTextBaseline, spacing: 10) {
                 Text(Fmt.amount(montantConverti, currency: currCible))
                     .scaledFont(40, weight: .bold, design: .monospaced)
@@ -182,14 +186,19 @@ struct ExchangeCalculatorView: View {
                     Text("DONT COMMISSION")
                         .scaledFont(11, design: .monospaced)
                         .tracking(2)
-                        .foregroundStyle(.white.opacity(0.45))
+                        .foregroundStyle(.white)
                     HStack(spacing: 6) {
                         Text("\(Fmt.amount(calcul.commissionAmount, currency: currCible)) \(currCible.code)")
                             .scaledFont(18, weight: .semibold, design: .monospaced)
                             .foregroundStyle(Color.accentGold)
                         Text("(\(Fmt.rate(commission))%)")
                             .scaledFont(14, design: .monospaced)
-                            .foregroundStyle(.white.opacity(0.5))
+                            .foregroundStyle(.white)
+                    }
+                    if currSource.code != currCible.code {
+                        Text("soit \(Fmt.amount(commissionEnSource, currency: currSource)) \(currSource.code)")
+                            .scaledFont(13, design: .monospaced)
+                            .foregroundStyle(.white)
                     }
                 }
             }

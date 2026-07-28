@@ -26,7 +26,7 @@ struct ResultBoard: View {
             Text(isInsufficient ? "MONTANT INSUFFISANT" : "MONNAIE À RENDRE")
                 .scaledFont(11, design: .monospaced)
                 .tracking(2.5)
-                .foregroundStyle(.white.opacity(0.5))
+                .foregroundStyle(.white)
                 .padding(.bottom, 12)
 
             Text(isInsufficient ? "----.--" : mainText)
@@ -57,13 +57,13 @@ struct ResultBoard: View {
                 HStack(alignment: .firstTextBaseline, spacing: 8) {
                     Text("soit")
                         .scaledFont(12, design: .monospaced)
-                        .foregroundStyle(.white.opacity(0.5))
+                        .foregroundStyle(.white)
                     Text(Fmt.amount(secondaryAmount, currency: secondaryCurrency))
                         .scaledFont(17, weight: .bold, design: .monospaced)
                         .foregroundStyle(Color.cream)
                     Text("\(secondaryCurrency.flag) \(secondaryCurrency.code)")
                         .scaledFont(12, design: .monospaced)
-                        .foregroundStyle(.white.opacity(0.5))
+                        .foregroundStyle(.white)
                 }
                 .padding(.top, 14)
 
@@ -71,13 +71,13 @@ struct ResultBoard: View {
                     HStack(alignment: .firstTextBaseline, spacing: 8) {
                         Text("dont pourboire")
                             .scaledFont(11, design: .monospaced)
-                            .foregroundStyle(.white.opacity(0.5))
+                            .foregroundStyle(.white)
                         Text("\(Fmt.amount(tipAmount, currency: priceCurrency)) \(priceCurrency.code)")
                             .scaledFont(13, weight: .semibold, design: .monospaced)
                             .foregroundStyle(Color.accentGold)
                         Text("(\(String(format: "%.1f", tipPercent))%)")
                             .scaledFont(11, design: .monospaced)
-                            .foregroundStyle(.white.opacity(0.5))
+                            .foregroundStyle(.white)
                     }
                     .padding(.top, 8)
                 }
