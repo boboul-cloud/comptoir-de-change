@@ -439,6 +439,17 @@
         }
       }
     },
+    "Calcul de change": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Currency exchange calculator"
+          }
+        }
+      }
+    },
     "Canada": {
       "extractionState": "manual",
       "localizations": {
@@ -583,6 +594,17 @@
         }
       }
     },
+    "DONT COMMISSION": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "INCLUDING COMMISSION"
+          }
+        }
+      }
+    },
     "Danemark": {
       "extractionState": "manual",
       "localizations": {
@@ -623,6 +645,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Currency paid"
+          }
+        }
+      }
+    },
+    "Devise remise": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Currency handed over"
+          }
+        }
+      }
+    },
+    "Devise souhaitée": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Currency wanted"
           }
         }
       }
@@ -1090,6 +1134,17 @@
         }
       }
     },
+    "MONTANT CONVERTI": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CONVERTED AMOUNT"
+          }
+        }
+      }
+    },
     "MONTANT INSUFFISANT": {
       "extractionState": "manual",
       "localizations": {
@@ -1174,6 +1229,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Insufficient amount. Missing %@ %@."
+          }
+        }
+      }
+    },
+    "Montant remis (en %@)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amount handed over (in %@)"
           }
         }
       }

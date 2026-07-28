@@ -15,6 +15,7 @@ struct ContentView: View {
     @State private var showHistory = false
     @State private var showAbout = false
     @State private var showAccessibleEntry = false
+    @State private var showExchangeCalculator = false
     @State private var noteTransaction = ""
     @State private var transactionEnregistree = false
 
@@ -218,6 +219,7 @@ struct ContentView: View {
         }
         .fullScreenCover(isPresented: $showAccessibleEntry) {
             AccessibleEntryView(
+                rateStore: store,
                 deviseA: $deviseA, deviseB: $deviseB, prix: $prix,
                 commissionTexte: $commissionTexte, pourboireTexte: $pourboireTexte,
                 pourboireEnPourcent: $pourboireEnPourcent, recu: $recu,
@@ -232,6 +234,9 @@ struct ContentView: View {
                 commissionEquivalents: commissionEquivalents, tipEquivalents: tipEquivalents,
                 swapCurrencies: swapCurrencies
             )
+        }
+        .fullScreenCover(isPresented: $showExchangeCalculator) {
+            ExchangeCalculatorView(rateStore: store)
         }
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
@@ -249,6 +254,7 @@ struct ContentView: View {
             HStack(spacing: 10) {
                 aboutButton
                 accessibleEntryButton
+                exchangeCalculatorButton
                 Spacer()
                 resetButton
                 historyButton
@@ -296,6 +302,20 @@ struct ContentView: View {
                 .overlay(Circle().stroke(Color.cardLine, lineWidth: 1))
         }
         .accessibilityLabel("Saisie en gros caractères")
+    }
+
+    /// Ouvre le calcul de change autonome (montant converti, commission comprise),
+    /// indépendant du prix à payer et du rendu de monnaie.
+    private var exchangeCalculatorButton: some View {
+        Button { showExchangeCalculator = true } label: {
+            Image(systemName: "arrow.left.arrow.right.circle")
+                .scaledFont(15, weight: .medium)
+                .foregroundStyle(Color.accentGreen)
+                .frame(width: 38, height: 38)
+                .background(Color.cardBG, in: .circle)
+                .overlay(Circle().stroke(Color.cardLine, lineWidth: 1))
+        }
+        .accessibilityLabel("Calcul de change")
     }
 
     private var resetButton: some View {

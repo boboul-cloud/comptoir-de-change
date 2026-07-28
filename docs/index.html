@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Comptoir de change — rendu de monnaie entre deux devises</title>
-<meta name="description" content="Application iOS de calcul du rendu de monnaie entre deux devises, avec journal d'achats de voyage et bilan exportable en PDF.">
+<meta name="description" content="Application iOS de calcul du rendu de monnaie entre deux devises, avec calcul de change, historique achats/ventes et bilan exportable en PDF.">
 <link rel="icon" href="assets/app-icon.png">
 <style>
   :root {
@@ -186,8 +186,9 @@
       <div class="eyebrow">Comptoir de change</div>
       <h1>Le rendu de monnaie, sans erreur</h1>
       <p class="tagline">
-        Calcule le rendu de monnaie entre deux devises avec le détail des billets
-        et pièces, et garde un bilan de tes achats pour ton prochain voyage.
+        Calcule le rendu de monnaie entre deux devises — ou une troisième — avec
+        le détail des billets et pièces, et garde un bilan de tes achats et ventes
+        pour ton prochain voyage.
       </p>
       <div class="cta-row">
         <!-- TODO : remplacer href="#" par le lien App Store une fois l'app publiée -->
@@ -211,32 +212,40 @@
       <h2>Ce que l'app sait faire</h2>
       <div class="grid">
         <div class="card">
-          <h3>Rendu en billets et pièces</h3>
-          <p>Décomposition optimale par dénominations réelles de chaque devise — le yen sans centimes, le franc suisse arrondi à 0,05, etc.</p>
+          <h3>Rendu dans n'importe quelle devise</h3>
+          <p>Décomposition optimale en billets et pièces réels — et le rendu peut se faire dans une troisième devise, pas seulement celles de la transaction.</p>
+        </div>
+        <div class="card">
+          <h3>Calcul de change autonome</h3>
+          <p>Un montant à convertir, une commission, un résultat clair — sans passer par un prix ni un achat, en gros caractères.</p>
+        </div>
+        <div class="card">
+          <h3>Commission &amp; pourboire, sans ambiguïté</h3>
+          <p>Calculés et affichés séparément du prix, jamais mélangés, avec le détail dans toutes les devises concernées.</p>
         </div>
         <div class="card">
           <h3>Taux en direct</h3>
           <p>Cours de la BCE via l'API Frankfurter, mis en cache localement avec une table de secours hors ligne.</p>
         </div>
         <div class="card">
-          <h3>Commission &amp; pourboire</h3>
-          <p>Marge de change optionnelle, pourboire en montant ou en pourcentage du prix.</p>
-        </div>
-        <div class="card">
-          <h3>Journal d'achats de voyage</h3>
-          <p>Enregistre chaque calcul avec un libellé et le lieu relevé au moment de la validation.</p>
+          <h3>Achats et ventes, historique séparé</h3>
+          <p>Chaque transaction est classée à part, avec un bilan chiffré dans la devise de ton choix.</p>
         </div>
         <div class="card">
           <h3>Bilan &amp; export PDF</h3>
-          <p>Total en euros et par devise, détail de chaque achat groupé par jour, exportable en PDF prêt à partager.</p>
+          <p>Total par devise, détail de chaque transaction groupé par jour, exportable en PDF prêt à partager.</p>
         </div>
         <div class="card">
-          <h3>Écran client</h3>
-          <p>Retourne le téléphone pour afficher le détail en toute transparence côté client.</p>
+          <h3>Écran client réversible</h3>
+          <p>Retourne le téléphone : prix, montant reçu et rendu s'affichent en toute transparence, dans toutes les devises concernées.</p>
         </div>
         <div class="card">
-          <h3>Anciennes devises</h3>
-          <p>Franc, mark, lire, peseta… converties au taux irrévocable de passage à l'euro.</p>
+          <h3>Écran en gros caractères</h3>
+          <p>Saisie et résultat pensés pour les malvoyants, synchronisés en temps réel avec l'écran principal.</p>
+        </div>
+        <div class="card">
+          <h3>Plus de 40 devises</h3>
+          <p>Du dirham au franc CFA en passant par le dollar taïwanais — plus les anciennes devises (franc, mark, lire…) au taux irrévocable de passage à l'euro.</p>
         </div>
         <div class="card">
           <h3>Accessible &amp; bilingue</h3>
