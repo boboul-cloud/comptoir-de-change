@@ -2,6 +2,37 @@
 
 Ce projet suit [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [1.1.0] - 2026-07-30
+
+### Ajouté
+
+- Rendu de monnaie dans n'importe quelle devise du catalogue, pas seulement les
+  deux devises de la transaction.
+- **Calcul de change autonome** : un montant, une commission, un résultat clair,
+  indépendant du prix à payer et du rendu de monnaie.
+- Distinction **achats / ventes** : historique, bilan et export PDF filtrés
+  séparément par type de transaction.
+- Choix de la devise du bilan de voyage (euro par défaut).
+- **Écran de saisie en gros caractères** pour les utilisateurs malvoyants,
+  synchronisé en temps réel avec l'écran principal.
+- 11 nouvelles devises : dirham des Émirats et du Maroc, riyal saoudien et
+  qatari, livre égyptienne, dinar algérien et tunisien, franc CFA (Afrique de
+  l'Ouest et centrale), franc CFP (Polynésie française), dollar taïwanais.
+- L'écran client affiche désormais le prix, la commission et le pourboire dans
+  les devises du reçu et du rendu quand elles diffèrent.
+- Page d'assistance sur le site (FAQ, contact).
+
+### Corrigé
+
+- L'écran client (« écran inversé ») s'affichait à l'envers sur iPad, faute de
+  distinguer la rotation déjà gérée nativement par l'OS.
+- Le clavier numérique s'affichait en panneau flottant sur iPad au lieu d'être
+  ancré en pleine largeur.
+- Un bug de calcul rendait trop de monnaie dans la devise payée dès qu'une
+  commission était appliquée.
+- Amélioration du contraste : les informations sur fond sombre, auparavant en
+  gris peu lisible, sont maintenant en blanc plein.
+
 ## [1.0.0] - 2026-07-25
 
 ### Ajouté
